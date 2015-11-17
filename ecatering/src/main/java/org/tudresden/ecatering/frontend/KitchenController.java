@@ -15,7 +15,11 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Quantity;
 import org.tudresden.ecatering.kitchen.Ingredient;
 import org.tudresden.ecatering.kitchen.IngredientRepository;
+import org.tudresden.ecatering.kitchen.KitchenManager;
+import org.tudresden.ecatering.kitchen.Meal;
+import org.tudresden.ecatering.kitchen.MealRepository;
 import org.tudresden.ecatering.kitchen.StockManager;
+import org.tudresden.ecatering.kitchen.Meal.MealType;
 
 
 @Controller
@@ -23,11 +27,13 @@ import org.tudresden.ecatering.kitchen.StockManager;
 class KitchenController {
 
 	private final StockManager stockManager;
+	private final KitchenManager kitchenManager;
 
 	@Autowired
-	public KitchenController(IngredientRepository inventory) {
+	public KitchenController(IngredientRepository inventory, MealRepository mealRepo) {
 
 		this.stockManager = new StockManager(inventory);
+		this.kitchenManager = new KitchenManager(mealRepo);
 	}
 
 
@@ -45,7 +51,7 @@ class KitchenController {
 	}
 	
 	@RequestMapping(value = "/addIngredient", method = RequestMethod.POST)
-	public String comment(@RequestParam("name") String name, @RequestParam("quantity") int quantity,@RequestParam("price") double price,@RequestParam("date") String date) {
+	public String addIngredient(@RequestParam("name") String name, @RequestParam("quantity") int quantity,@RequestParam("price") double price,@RequestParam("date") String date) {
 		//Actually create the Ingredient
 		Product product = new Product(name,Money.of(price, EURO));
 		Quantity menge = Quantity.of(quantity);
@@ -53,6 +59,29 @@ class KitchenController {
 		//Need to find out how we can save the date right
 		stockManager.saveIngredient(ingredient);
 		return "createIngredient";
+	}
+	
+	@RequestMapping("/createMenue")
+	public String createMenue(ModelMap modelMap) {
+		modelMap.addAttribute("allIngredients", stockManager.findAllIngredients());
+		modelMap.addAttribute("allMenues", kitchenManager.findAllMeals());
+		return "createMenue";
+	}
+	
+	@RequestMapping(value = "/addMenue", method = RequestMethod.POST)
+	public String addMenue(@RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("type") String mealType){
+		
+		Meal m1 = kitchenManager.createMeal(name, Money.of(price, EURO), MealType.REGULAR);
+		
+		if(mealType.equals("Diet")){
+			m1 = kitchenManager.createMeal(name, Money.of(price, EURO), MealType.DIET);
+		}else if(mealType.equals("Special")){
+			m1 = kitchenManager.createMeal(name, Money.of(price, EURO), MealType.SPECIAL);
+		}
+		
+		kitchenManager.saveMeal(m1);
+		
+		return "redirect:/createMenue";
 	}
 
 }
