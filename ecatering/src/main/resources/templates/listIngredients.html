@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html class="mdl-js" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="/resources/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/resources/css/newStyle.css" />
+		<link rel="stylesheet" type="text/css" href="/resources/css/material.min.css" />
+		<title th:text="#{home.title}">eCatering</title>
+	</head>
+<body>
+	<div class="all mdl-layout__container">
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header has-drawer is-upgraded" data-upgraded=",MaterialLayout">
+			<div class="mdl-layout__drawer">
+			<span class="mdl-layout-title">
+                <span th:text="#{home.title}">Best-Food-Catering</span>
+            </span>
+            <nav class="mdl-navigation">
+            	<a class="mdl-navigation__link mdl-navigation__link--icon" href="/">
+                    <span>Home</span>
+                </a>
+                <div class="subheader" sec:authorize="isAuthenticated()" th:text="#{kitchen.title}">Kitchen</div>
+                <a class="mdl-navigation__link mdl-navigation__link--icon" href="#" sec:authorize="hasRole('ROLE_KITCHEN')">
+                    <span>Placeholder</span>
+                </a>
+                <div class="subheader" sec:authorize="isAuthenticated()" th:text="#{stock.title}">Stock</div>
+                <a class="mdl-navigation__link mdl-navigation__link--icon" href="#" sec:authorize="hasRole('ROLE_STOCK')">
+                    <span>Neue Zutat</span>
+                </a>
+            </nav>
+		</div>
+			<header class="mdl-layout__header is-casting-shadow">
+				<div class="mdl-layout__drawer-button">
+	           		<i class="material-icons">menu</i>
+	           </div>
+	           	<div class="mdl-layout__header-row">
+               		 <span class="mdl-layout-title" th:text="#{createIngredient.title}">Login</span>
+            	</div>
+            	
+            	
+			</header>
+			<main class="mdl-layout__content">
+			<p class="login_screen" th:text="#{createIngredient.welcome}">Willkommen beim eCatering.</p>
+			
+			<table class="login_screen">
+                    <tr>
+                        <th>Name</th>
+                        <th>Menge</th>
+                        <th>Preis/Zutat</th>
+                        <th>Ablaufdatum</th>
+                    </tr>
+                    <tr th:each="ingredient : ${ingredient}">
+                        <td th:text="${ingredient.name}">Hackfleisch</td>
+                        <td th:text="${ingredient.amount}">2</td>
+                        <td th:text="${ingredient.price}">1</td>
+                        <td th:text="${ingredient.expirationDate}">12</td>
+                    </tr>
+            </table>
+			
+			</main>
+		</div>
+	</div>
+</body>
+</html>
