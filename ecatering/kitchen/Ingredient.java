@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tudresden.ecatering.inventory;
+package org.tudresden.ecatering.kitchen;
 
 
 import java.time.LocalDateTime;
@@ -34,8 +34,10 @@ public class Ingredient extends InventoryItem {
 
 	private LocalDateTime expirationDate;
 
-
 	
+//need default constructor	
+	@SuppressWarnings({ "unused", "deprecation" })
+	private Ingredient() {}
 	
 
 	public Ingredient(Product product,Quantity quantity,LocalDateTime expirationDate) {

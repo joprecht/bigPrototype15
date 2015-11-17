@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tudresden.ecatering.inventory;
+package org.tudresden.ecatering.kitchen;
 
 
-import java.util.Optional;
 
-import org.salespointframework.catalog.Product;
 import org.salespointframework.inventory.Inventory;
 
 /**
@@ -26,7 +24,7 @@ import org.salespointframework.inventory.Inventory;
  * 
  * @author Oliver Gierke
  */
-public interface InventoryRepository extends Inventory<Ingredient> {
+public interface IngredientRepository extends Inventory<Ingredient> {
 
 	/**
 	 * Returns all {@link Ingredient}s by type.
@@ -35,5 +33,4 @@ public interface InventoryRepository extends Inventory<Ingredient> {
 	 * @return
 	 */
 	
-	Optional<Ingredient> findByProduct(Product product);
 }
