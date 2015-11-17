@@ -20,12 +20,15 @@
                     <span>Home</span>
                 </a>
                 <div class="subheader" sec:authorize="isAuthenticated()" th:text="#{kitchen.title}">Kitchen</div>
-                <a class="mdl-navigation__link mdl-navigation__link--icon" href="#" sec:authorize="hasRole('ROLE_KITCHEN')">
-                    <span>Placeholder</span>
+                <a class="mdl-navigation__link mdl-navigation__link--icon" href="/kitchen" sec:authorize="hasRole('ROLE_KITCHEN')">
+                    <span>Kitchen</span>
                 </a>
                 <div class="subheader" sec:authorize="isAuthenticated()" th:text="#{stock.title}">Stock</div>
-                <a class="mdl-navigation__link mdl-navigation__link--icon" href="#" sec:authorize="hasRole('ROLE_STOCK')">
+                <a class="mdl-navigation__link mdl-navigation__link--icon" href="#" sec:authorize="hasRole('ROLE_KITCHEN')">
                     <span>Neue Zutat</span>
+                </a>
+                <a class="mdl-navigation__link mdl-navigation__link--icon" href="/listIngredients" sec:authorize="hasRole('ROLE_KITCHEN')">
+                    <span>Zutatenliste</span>
                 </a>
             </nav>
 		</div>
@@ -43,11 +46,11 @@
 			<p class="login_screen" th:text="#{createIngredient.welcome}">Willkommen beim eCatering.</p>
 			
 			
-			<form class="login_screen" th:action="@{/createIngredient}" method="post">
-			<input type="text" id="name" placeholder="Zutaten Name" autofocus="autofocus"/>
-			<input type="number" id="quantity" placeholder="Anzahl"/>
-			<input type="number" pattern="(^\d+(\.|\,)\d{2}$)" id="Preis" placeholder="Preis"/>
-			<input type="date" id="date" placeholder="Ablaufdatum"/>
+			<form class="login_screen" th:action="@{/addIngredient}" method="post">
+			<input type="text" name="name" placeholder="Zutaten Name" autofocus="autofocus"/>
+			<input type="number" name="quantity" placeholder="Anzahl"/>
+			<input type="text" pattern="(^\d+(\.)\d{2}$)" name="price" placeholder="Preis"/>
+			<input type="date" name="date" placeholder="Ablaufdatum"/>
 			<input type="submit" value="Zutat Erstellen" />
 			</form>
 			</main>

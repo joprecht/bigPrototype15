@@ -26,13 +26,6 @@ public class MainController {
 		return "index";
 	}
 	
-	@RequestMapping("/createIngredient")
-	public String createIngredient() {
-		return "createIngredient";
-	}
-	
-	
-	
 	@RequestMapping("/kitchen")
 	public String kitchen() {
 		return "kitchen";

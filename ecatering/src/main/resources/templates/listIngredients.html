@@ -20,12 +20,15 @@
                     <span>Home</span>
                 </a>
                 <div class="subheader" sec:authorize="isAuthenticated()" th:text="#{kitchen.title}">Kitchen</div>
-                <a class="mdl-navigation__link mdl-navigation__link--icon" href="#" sec:authorize="hasRole('ROLE_KITCHEN')">
-                    <span>Placeholder</span>
+                <a class="mdl-navigation__link mdl-navigation__link--icon" href="/kitchen" sec:authorize="hasRole('ROLE_KITCHEN')">
+                    <span>Kitchen</span>
                 </a>
                 <div class="subheader" sec:authorize="isAuthenticated()" th:text="#{stock.title}">Stock</div>
-                <a class="mdl-navigation__link mdl-navigation__link--icon" href="#" sec:authorize="hasRole('ROLE_STOCK')">
+                <a class="mdl-navigation__link mdl-navigation__link--icon" href="/createIngredient" sec:authorize="hasRole('ROLE_KITCHEN')">
                     <span>Neue Zutat</span>
+                </a>
+                <a class="mdl-navigation__link mdl-navigation__link--icon" href="#" sec:authorize="hasRole('ROLE_KITCHEN')">
+                    <span>Zutatenliste</span>
                 </a>
             </nav>
 		</div>
