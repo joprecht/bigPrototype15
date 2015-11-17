@@ -23,12 +23,12 @@ class KitchenController {
 	}
 
 
-	@RequestMapping("/kitchen")
+	@RequestMapping("/listIngredients")
 	public String kitchenData(ModelMap modelMap) {
 
 		modelMap.addAttribute("allIngredients", stockManager.findAllIngredients());
 
-		return "kitchen";
+		return "listIngredients";
 	}
 
 }

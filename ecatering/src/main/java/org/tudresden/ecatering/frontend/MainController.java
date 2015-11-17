@@ -24,27 +24,17 @@ public class MainController {
 	@RequestMapping({ "/", "/index" })
 	public String index() {
 		return "index";
-	
 	}
 	
-<<<<<<< HEAD
 	@RequestMapping("/createIngredient")
 	public String createIngredient() {
 		return "createIngredient";
 	}
 	
+	
+	
 	@RequestMapping("/kitchen")
 	public String kitchen() {
 		return "kitchen";
 	}
-	
-	
-	@RequestMapping("/listIngredients")
-	public String listIngredients() {
-		return "listIngredients";
-	}
-=======
-	
-	
->>>>>>> origin/master
 }

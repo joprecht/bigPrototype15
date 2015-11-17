@@ -46,17 +46,16 @@
                     <tr>
                         <th>Name</th>
                         <th>Menge</th>
-                        <th>Preis/Zutat</th>
                         <th>Ablaufdatum</th>
+                        <th>Preis/Zutat</th>
                     </tr>
-                    <tr th:each="ingredient : ${ingredient}">
-                        <td th:text="${ingredient.name}">Hackfleisch</td>
-                        <td th:text="${ingredient.amount}">2</td>
-                        <td th:text="${ingredient.price}">1</td>
-                        <td th:text="${ingredient.expirationDate}">12</td>
-                    </tr>
-            </table>
-			
+                    <tr th:each="ingredient : ${allIngredients} ">
+							<td th:text="${ingredient.product}"></td>
+							<td th:text="${ingredient.quantity}"></td>
+							<td th:text="${#temporals.format(ingredient.expirationDate, 'dd.MM.yyyy')}"></td>
+							<td th:text="${ingredient.product.price}"></td>
+					</tr>
+            </table>		
 			</main>
 		</div>
 	</div>
