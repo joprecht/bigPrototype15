@@ -27,6 +27,7 @@ public class MainController {
 	
 	}
 	
+<<<<<<< HEAD
 	@RequestMapping("/createIngredient")
 	public String createIngredient() {
 		return "createIngredient";
@@ -42,4 +43,8 @@ public class MainController {
 	public String listIngredients() {
 		return "listIngredients";
 	}
+=======
+	
+	
+>>>>>>> origin/master
 }
