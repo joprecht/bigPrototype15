@@ -1,9 +1,6 @@
 package org.tudresden.ecatering.usermanager;
 
-import javax.persistence.Entity;
-
-@Entity
-public class Adress {
+public class Address {
 	
 	private String firstname;
 	private String lastname;
@@ -13,7 +10,7 @@ public class Adress {
 	private String country;
 	
 	
-	public Adress(String firstname, String lastname, String street, int streetNumber, int postalCode, String country) {
+	public Address(String firstname, String lastname, String street, int streetNumber, int postalCode, String country) {
 		super();
 		this.firstname = firstname;
 		this.lastname = lastname;
