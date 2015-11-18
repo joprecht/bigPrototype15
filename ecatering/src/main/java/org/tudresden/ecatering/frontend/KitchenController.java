@@ -83,5 +83,11 @@ class KitchenController {
 		
 		return "redirect:/createMeal";
 	}
+	
+	@RequestMapping("/listMeals")
+	public String listMeals(ModelMap modelMap) {
+		modelMap.addAttribute("allMeals", kitchenManager.findAllMeals());
+		return "listMeals";
+	}
 
 }

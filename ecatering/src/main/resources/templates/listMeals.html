@@ -40,33 +40,26 @@
 	           		<i class="material-icons">menu</i>
 	           </div>
 	           	<div class="mdl-layout__header-row">
-               		 <span class="mdl-layout-title" th:text="#{createMeal.title}">Login</span>
+               		 <span class="mdl-layout-title" th:text="#{listMeals.title}">Login</span>
             	</div>
             	
             	
 			</header>
 			<main class="mdl-layout__content">
-			<p class="login_screen" th:text="#{createMeal.welcome}">Willkommen beim eCatering.</p>
+			<p class="login_screen" th:text="#{listMeals.welcome}">Willkommen beim eCatering.</p>
 			
-			<form class="login_screen" th:action="@{/addMeal}" method="post">
-			<table class="login_screen" style="border-collapse: collapse;">
-				<tr>
-					<th th:text="#{createMeal.name}">Name</th>
-					<th th:text="#{createMeal.price}">Preis</th>
-					<th th:text="#{createMeal.type}">Typ</th>
-				</tr>
-				<tr>
-					<td><input type="text" name="name" placeholder="Gericht Name" autofocus="autofocus"/></td>
-					<td><input type="text" pattern="(^\d+(\.)\d{2}$)" name="price" placeholder="Preis"/></td>
-					<td><select name="type">
-						<option value="">Fleisch</option>
-		        		<option value="Diet">Diät</option>
-		        		<option value="Special">Spezial</option>
-	        		</select></td>
-	        	</tr>
-	        </table><br/><br/>
-			<input type="submit" value="Mahlzeit Erstellen" />
-			</form>
+            <table class="login_screen">
+            			<tr>
+            				<th th:text="#{listMeals.name}">Name</th>
+            				<th th:text="#{listMeals.price}">Preis</th>
+            				<th th:text="#{listMeals.type}">Typ</th>
+            			</tr>
+	        			<tr th:each="meal: ${allMeals} ">
+							<td th:text="${meal.name}"></td>
+							<td th:text="${meal.price}"></td>
+							<td th:text="${meal.mealType}"></td>
+						</tr>
+	        </table>		
 			</main>
 		</div>
 	</div>
