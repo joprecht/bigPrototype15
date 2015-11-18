@@ -61,14 +61,14 @@ class KitchenController {
 		return "createIngredient";
 	}
 	
-	@RequestMapping("/createMenue")
+	@RequestMapping("/createMeal")
 	public String createMenue(ModelMap modelMap) {
 		modelMap.addAttribute("allIngredients", stockManager.findAllIngredients());
-		modelMap.addAttribute("allMenues", kitchenManager.findAllMeals());
-		return "createMenue";
+		modelMap.addAttribute("allMeals", kitchenManager.findAllMeals());
+		return "createMeal";
 	}
 	
-	@RequestMapping(value = "/addMenue", method = RequestMethod.POST)
+	@RequestMapping(value = "/addMeal", method = RequestMethod.POST)
 	public String addMenue(@RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("type") String mealType){
 		
 		Meal m1 = kitchenManager.createMeal(name, Money.of(price, EURO), MealType.REGULAR);
@@ -81,7 +81,7 @@ class KitchenController {
 		
 		kitchenManager.saveMeal(m1);
 		
-		return "redirect:/createMenue";
+		return "redirect:/createMeal";
 	}
 
 }
