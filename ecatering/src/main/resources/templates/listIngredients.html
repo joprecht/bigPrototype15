@@ -37,20 +37,20 @@
 	           		<i class="material-icons">menu</i>
 	           </div>
 	           	<div class="mdl-layout__header-row">
-               		 <span class="mdl-layout-title" th:text="#{createIngredient.title}">Login</span>
+               		 <span class="mdl-layout-title" th:text="#{listIngredients.title}">Login</span>
             	</div>
             	
             	
 			</header>
 			<main class="mdl-layout__content">
-			<p class="login_screen" th:text="#{createIngredient.welcome}">Willkommen beim eCatering.</p>
+			<p class="login_screen" th:text="#{listIngredients.welcome}">Willkommen beim eCatering.</p>
 			
 			<table class="login_screen">
                     <tr>
-                        <th>Name</th>
-                        <th>Menge</th>
-                        <th>Ablaufdatum</th>
-                        <th>Preis/Zutat</th>
+                        <th th:text="#{listIngredients.name}">Name</th>
+                        <th th:text="#{listIngredients.quantity}">Menge</th>
+                        <th th:text="#{listIngredients.expirationDate}">Ablaufdatum</th>
+                        <th th:text="#{listIngredients.price}">Preis/Zutat</th>
                     </tr>
                     <tr th:each="ingredient : ${allIngredients} ">
 							<td th:text="${ingredient.product}"></td>

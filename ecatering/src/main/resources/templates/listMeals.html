@@ -24,10 +24,10 @@
                     <span>Kitchen</span>
                 </a>
                 <div class="subheader" sec:authorize="isAuthenticated()" th:text="#{stock.title}">Stock</div>
-                <a class="mdl-navigation__link mdl-navigation__link--icon" href="#" sec:authorize="hasRole('ROLE_KITCHEN')">
+                <a class="mdl-navigation__link mdl-navigation__link--icon" href="/createIngredient" sec:authorize="hasRole('ROLE_KITCHEN')">
                     <span>Neue Zutat</span>
                 </a>
-                <a class="mdl-navigation__link mdl-navigation__link--icon" href="/listIngredients" sec:authorize="hasRole('ROLE_KITCHEN')">
+                <a class="mdl-navigation__link mdl-navigation__link--icon" href="#" sec:authorize="hasRole('ROLE_KITCHEN')">
                     <span>Zutatenliste</span>
                 </a>
             </nav>
@@ -37,32 +37,26 @@
 	           		<i class="material-icons">menu</i>
 	           </div>
 	           	<div class="mdl-layout__header-row">
-               		 <span class="mdl-layout-title" th:text="#{createIngredient.title}">Login</span>
+               		 <span class="mdl-layout-title" th:text="#{listMeals.title}">Login</span>
             	</div>
             	
             	
 			</header>
 			<main class="mdl-layout__content">
-			<p class="login_screen" th:text="#{createIngredient.welcome}">Willkommen beim eCatering.</p>
+			<p class="login_screen" th:text="#{listMeals.welcome}">Willkommen beim eCatering.</p>
 			
-			
-			<form class="login_screen" th:action="@{/addIngredient}" method="post">
-			<table class="login_screen" style="border-collapse: collapse;">
-				<tr>
-					<th th:text="#{createIngredient.name}">Name</th>
-					<th th:text="#{createIngredient.quantity}">Anzahl</th>
-					<th th:text="#{createIngredient.price}">Preis</th>
-					<th th:text="#{createIngredient.expirationDate}">Ablaufdatum</th>
-				</tr>
-				<tr>
-					<td><input type="text" name="name" placeholder="Zutaten Name" autofocus="autofocus"/></td>
-					<td><input type="number" name="quantity" placeholder="Anzahl"/></td>
-					<td><input type="text" pattern="(^\d+(\.)\d{2}$)" name="price" placeholder="Preis"/></td>
-					<td><input type="date" name="date" placeholder="Ablaufdatum"/></td>
-				</tr>
-			</table>
-			<input type="submit" value="Zutat Erstellen" />
-			</form>
+            <table class="login_screen">
+            			<tr>
+            				<th th:text="#{listMeals.name}">Name</th>
+            				<th th:text="#{listMeals.price}">Preis</th>
+            				<th th:text="#{listMeals.type}">Typ</th>
+            			</tr>
+	        			<tr th:each="meal: ${allMeals} ">
+							<td th:text="${meal.name}"></td>
+							<td th:text="${meal.price}"></td>
+							<td th:text="${meal.mealType}"></td>
+						</tr>
+	        </table>		
 			</main>
 		</div>
 	</div>
