@@ -2,11 +2,18 @@ package org.tudresden.ecatering.kitchen;
 
 import java.util.*;
 
+import javax.persistence.*;
+
+@Entity
 public class DailyMenu {
 
+	@ManyToOne
+	private Menu menu;
 	//Attributen
 	private List<Meal> dailyMeals;
 	private Day day;
+	
+	
 	
 	//Methoden
 	public DailyMenu(Day day, List<Meal> dailyMeals)
