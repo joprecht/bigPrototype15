@@ -40,35 +40,17 @@
 	           		<i class="material-icons">menu</i>
 	           </div>
 	           	<div class="mdl-layout__header-row">
-               		 <span class="mdl-layout-title" th:text="#{createIngredient.title}">Login</span>
+               		 <span class="mdl-layout-title" th:text="#{register.title}">Login</span>
             	</div>
             	
             	
 			</header>
 			<main class="mdl-layout__content">
-			<p class="login_screen" th:text="#{createIngredient.welcome}">Willkommen beim eCatering.</p>
-			
-			
-			<form class="login_screen" th:action="@{/addIngredient}" method="post">
-			<table class="login_screen" style="border-collapse: collapse;">
-				<tr>
-					<th th:text="#{createIngredient.name}">Name</th>
-					<th th:text="#{createIngredient.quantity}">Anzahl</th>
-					<th th:text="#{createIngredient.price}">Preis</th>
-					<th th:text="#{createIngredient.expirationDate}">Ablaufdatum</th>
-				</tr>
-				<tr>
-					<td><input type="text" name="name" placeholder="Zutaten Name" autofocus="autofocus"/></td>
-					<td><input type="number" name="quantity" placeholder="Anzahl"/></td>
-					<td><input type="text" pattern="(^\d+(\.)\d{2}$)" name="price" placeholder="Preis"/></td>
-					<td>
-					<input type="number" name="DD" placeholder="TT" style="width:35px"/>
-					<input type="number" name="MM" placeholder="MM" style="width:40px"/>
-					<input type="number" name="YYYY" placeholder="YYYY" style="width:55px"/>
-					</td>
-				</tr>
-			</table><br/><br/>
-			<input type="submit" value="Zutat Hinzufügen" />
+			<p class="login_screen" th:text="#{register.welcome}">Willkommen beim eCatering.</p>
+			<form action="registerUser" class="login_screen">
+				<input type="text" name="username" placeholder="Username"/><br/>
+				<input type="password" name="password" placeholder="Password"/><br/>
+				<input type="submit" value="Anmelden"/>
 			</form>
 			</main>
 		</div>

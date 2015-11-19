@@ -51,11 +51,11 @@ class KitchenController {
 	}
 	
 	@RequestMapping(value = "/addIngredient", method = RequestMethod.POST)
-	public String addIngredient(@RequestParam("name") String name, @RequestParam("quantity") int quantity,@RequestParam("price") double price,@RequestParam("date") String date) {
+	public String addIngredient(@RequestParam("name") String name, @RequestParam("quantity") int quantity,@RequestParam("price") double price,@RequestParam("DD") int day,@RequestParam("MM") int month,@RequestParam("YYYY") int year) {
 		//Actually create the Ingredient
 		Product product = new Product(name,Money.of(price, EURO));
 		Quantity menge = Quantity.of(quantity);
-		Ingredient ingredient = stockManager.createIngredient(product,menge,LocalDateTime.of(2015, 12, 24, 0, 0));
+		Ingredient ingredient = stockManager.createIngredient(product,menge,LocalDateTime.of(year, month, day, 0, 0));
 		//Need to find out how we can save the date right
 		stockManager.saveIngredient(ingredient);
 		return "createIngredient";

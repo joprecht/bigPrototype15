@@ -15,11 +15,24 @@
  */
 package org.tudresden.ecatering.frontend;
 
+import org.salespointframework.useraccount.Role;
+import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccountManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
+	
+	private final UserAccountManager userAccountManager;
+	
+	@Autowired
+	public MainController(UserAccountManager userAccountManager) {
+
+		this.userAccountManager = userAccountManager;
+	}
 
 	@RequestMapping({ "/", "/index" })
 	public String index() {
@@ -29,5 +42,21 @@ public class MainController {
 	@RequestMapping("/kitchen")
 	public String kitchen() {
 		return "kitchen";
+	}
+	
+	@RequestMapping("/register")
+	public String register(){
+		return "register";
+	}
+	
+	@RequestMapping("/registerUser")
+	public String registerUser(@RequestParam("username") String username, @RequestParam("password") String password){
+		
+		UserAccount user = userAccountManager.create(username, password, new Role("ROLE_KITCHEN"));
+		
+		userAccountManager.save(user);
+		
+		
+		return "index";
 	}
 }
