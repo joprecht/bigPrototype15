@@ -14,13 +14,14 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.tudresden.ecatering.kitchen.Ingredient;
-import org.tudresden.ecatering.kitchen.IngredientRepository;
+import org.tudresden.ecatering.stock.Ingredient;
+import org.tudresden.ecatering.stock.IngredientRepository;
 import org.tudresden.ecatering.kitchen.KitchenManager;
 import org.tudresden.ecatering.kitchen.Meal;
-import org.tudresden.ecatering.kitchen.Meal.MealType;
+import org.tudresden.ecatering.kitchen.MealType;
+import org.tudresden.ecatering.kitchen.RecipeRepository;
 import org.tudresden.ecatering.kitchen.MealRepository;
-import org.tudresden.ecatering.kitchen.StockManager;
+import org.tudresden.ecatering.stock.StockManager;
 
 
 @Component
@@ -31,7 +32,7 @@ public class ECateringDataInitializer implements DataInitializer {
 	private final KitchenManager kitchenManager;
 
 	@Autowired
-	public ECateringDataInitializer(IngredientRepository inventory, MealRepository mealRepo,
+	public ECateringDataInitializer(IngredientRepository inventory, MealRepository mealRepo, RecipeRepository recipes,
 			UserAccountManager userAccountManager) {
 
 		Assert.notNull(inventory, "Inventory must not be null!");
@@ -40,7 +41,7 @@ public class ECateringDataInitializer implements DataInitializer {
 
 		this.userAccountManager = userAccountManager;
 		this.stockManager = new StockManager(inventory);
-		this.kitchenManager = new KitchenManager(mealRepo);
+		this.kitchenManager = new KitchenManager(mealRepo, recipes);
 	}
 	
 	@Override

@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Quantity;
-import org.tudresden.ecatering.kitchen.Ingredient;
-import org.tudresden.ecatering.kitchen.IngredientRepository;
+import org.tudresden.ecatering.stock.Ingredient;
+import org.tudresden.ecatering.stock.IngredientRepository;
 import org.tudresden.ecatering.kitchen.KitchenManager;
 import org.tudresden.ecatering.kitchen.Meal;
 import org.tudresden.ecatering.kitchen.MealRepository;
-import org.tudresden.ecatering.kitchen.StockManager;
-import org.tudresden.ecatering.kitchen.Meal.MealType;
+import org.tudresden.ecatering.stock.StockManager;
+import org.tudresden.ecatering.kitchen.MealType;
+import org.tudresden.ecatering.kitchen.RecipeRepository;
 
 
 @Controller
@@ -30,10 +31,10 @@ class KitchenController {
 	private final KitchenManager kitchenManager;
 
 	@Autowired
-	public KitchenController(IngredientRepository inventory, MealRepository mealRepo) {
+	public KitchenController(IngredientRepository inventory, MealRepository mealRepo,RecipeRepository recipes) {
 
 		this.stockManager = new StockManager(inventory);
-		this.kitchenManager = new KitchenManager(mealRepo);
+		this.kitchenManager = new KitchenManager(mealRepo, recipes);
 	}
 
 
