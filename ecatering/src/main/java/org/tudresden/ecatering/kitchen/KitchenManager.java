@@ -53,9 +53,11 @@ public Optional<Meal> findMealByIdentifier(ProductIdentifier identifier) {
 	
 	while(iter.hasNext())
 	{
-		if(iter.next().getIdentifier().equals(identifier))
+		Meal meal = iter.next();
+		
+		if(meal.getIdentifier().equals(identifier))
 		{
-			return Optional.of(iter.next());
+			return Optional.of(meal);
 		}
 	}
 	
@@ -72,9 +74,11 @@ public Optional<Recipe> findRecipeByMealIdentifier(ProductIdentifier mealID) {
 	Iterator<Recipe> iter = allRecipes.iterator();
 	while(iter.hasNext())
 	{
-		if(iter.next().getMealID().equals(mealID))
+		Recipe recipe = iter.next();
+		
+		if(recipe.getMealID().equals(mealID))
 		{
-			return Optional.of(iter.next());
+			return Optional.of(recipe);
 		}
 		
 	}
@@ -85,9 +89,11 @@ public Optional<Recipe> findRecipeByMealIdentifier(ProductIdentifier mealID) {
 
 public Recipe createRecipe(String description,List<Ingredient> ingredients, ProductIdentifier mealID) {
 	
+	Optional<Recipe> recipeExist = this.findRecipeByMealIdentifier(mealID);
+	Optional<Meal> mealExist = this.findMealByIdentifier(mealID);
 	
-	Assert.isTrue(!this.findRecipeByMealIdentifier(mealID).equals(Optional.empty()), "Recipe for this meal already exists");
-	Assert.isTrue(!this.findMealByIdentifier(mealID).equals(Optional.empty()), "Meal doesnt exist");
+	Assert.isTrue(mealExist.isPresent(), "Meal doesnt exist");
+	Assert.isTrue(!recipeExist.isPresent(), "Recipe for this meal already exists");
 	Recipe recipe = new Recipe(description, ingredients, mealID);
 	return recipe;
 }

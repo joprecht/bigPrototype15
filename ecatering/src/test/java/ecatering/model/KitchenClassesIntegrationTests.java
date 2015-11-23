@@ -143,7 +143,7 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		manager.saveMeal(m1);
 				
 		assertThat(manager.findMealsByName("Spaghetti"), is(iterableWithSize(2)));
-		assertThat(manager.findMealsByMealType(MealType.REGULAR), is(iterableWithSize(2)));
+		assertThat(manager.findMealsByMealType(MealType.REGULAR), is(iterableWithSize(3)));
 		
 		Meal m2 = manager.createMeal("Pizza", Money.of(6.50, EURO),MealType.REGULAR);	
 		manager.saveMeal(m2);
