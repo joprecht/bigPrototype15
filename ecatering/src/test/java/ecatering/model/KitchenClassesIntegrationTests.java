@@ -9,6 +9,7 @@ import static org.salespointframework.core.Currencies.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.salespointframework.catalog.Product;
@@ -142,7 +143,40 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		manager.saveMeal(m1);
 				
 		assertThat(manager.findMealsByName("Spaghetti"), is(iterableWithSize(2)));
+		assertThat(manager.findMealsByMealType(MealType.REGULAR), is(iterableWithSize(2)));
 		
+		Meal m2 = manager.createMeal("Pizza", Money.of(6.50, EURO),MealType.REGULAR);	
+		manager.saveMeal(m2);
+		Optional<Meal> result = manager.findMealByIdentifier(m2.getIdentifier());
+		
+		assertTrue("meal doesnt exists", result.isPresent());
+		
+		
+		Product p1 = new Product("Pizzateig",Money.of(0.79, EURO));
+		Quantity q1 = Quantity.of(1);
+		LocalDateTime expDate1 = LocalDateTime.of(2015, 12, 24, 0, 0);
+		
+		Product p2 = new Product("Tomatensauce",Money.of(2.49, EURO));
+		Quantity q2 = Quantity.of(1);
+		LocalDateTime expDate2 = LocalDateTime.of(2015, 11, 5, 0, 0);
+		
+				
+		Ingredient in1 = new Ingredient(p1,q1, expDate1);
+		Ingredient in2 = new Ingredient(p2,q2, expDate2);
+		
+		List<Ingredient> inList = new ArrayList<Ingredient>();
+		inList.add(in1);
+		inList.add(in2);
+		
+		
+		Recipe r1 = manager.createRecipe("Pizza machen", inList, m2.getIdentifier());
+		manager.saveRecipe(r1);
+		
+		
+		//error throwing when meal isnt in repo (for testing, uncomment it)		
+		//Meal fakeMeal = manager.createMeal("Gibts gar nicht", Money.of(4.50, EURO),MealType.REGULAR);
+		//Recipe r2 = manager.createRecipe("Pizza machen", inList, fakeMeal.getIdentifier());
+
 		
 	}
 
