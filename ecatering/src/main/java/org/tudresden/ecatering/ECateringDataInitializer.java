@@ -83,6 +83,9 @@ public class ECateringDataInitializer implements DataInitializer {
 
 		UserAccount ua1 = userAccountManager.create("koch", "123", new Role("ROLE_KITCHEN"));
 		userAccountManager.save(ua1);
+		
+		UserAccount ua2 = userAccountManager.create("lager", "123", new Role("ROLE_STOCK"));
+		userAccountManager.save(ua2);
 
 	}
 }
