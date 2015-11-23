@@ -59,8 +59,6 @@ public class ECateringDataInitializer implements DataInitializer {
 	
 	private void initializeRecipeRepo() {
 		
-		Meal m2 = kitchenManager.createMeal("Pizza", Money.of(6.50, EURO),MealType.REGULAR);	
-		kitchenManager.saveMeal(m2);
 				
 		
 		Product p1 = new Product("Pizzateig",Money.of(0.79, EURO));
@@ -79,13 +77,16 @@ public class ECateringDataInitializer implements DataInitializer {
 		inList.add(in1);
 		inList.add(in2);
 		
-		Recipe r1 = kitchenManager.createRecipe("Pizza machen", inList, m2.getIdentifier());
-		kitchenManager.saveRecipe(r1);
+		//erstes Objekt aus der Liste von Meals mit dem Namen "Pizza"
+		Iterable<Meal> pizzaMeals = kitchenManager.findMealsByName("Pizza");
+						Meal meal = pizzaMeals.iterator().next();
+						Recipe recipe = kitchenManager.createRecipe("Pizza machen", inList, meal.getIdentifier());
+						kitchenManager.saveRecipe(recipe);
 	}
 	
 	private void initializeMealRepo() {
 		
-		Meal m1 = kitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO), MealType.REGULAR);
+		Meal m1 = kitchenManager.createMeal("Pizza", Money.of(4.50, EURO), MealType.REGULAR);
 		Meal m2 = kitchenManager.createMeal("Milchreis", Money.of(2.50, EURO), MealType.DIET);
 		
 		kitchenManager.saveMeal(m1);

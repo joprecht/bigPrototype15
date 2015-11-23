@@ -137,13 +137,13 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 
 		KitchenManager manager = new KitchenManager(mealRepo, recipeRepo);
 		
-		assertThat(manager.findMealsByName("Spaghetti"), is(iterableWithSize(1)));
+		assertThat(manager.findMealsByName("Spaghetti"), is(iterableWithSize(0)));
 	
 		Meal m1 = manager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);	
 		manager.saveMeal(m1);
 				
-		assertThat(manager.findMealsByName("Spaghetti"), is(iterableWithSize(2)));
-		assertThat(manager.findMealsByMealType(MealType.REGULAR), is(iterableWithSize(3)));
+		assertThat(manager.findMealsByName("Spaghetti"), is(iterableWithSize(1)));
+		assertThat(manager.findMealsByMealType(MealType.REGULAR), is(iterableWithSize(2)));
 		
 		Meal m2 = manager.createMeal("Pizza", Money.of(6.50, EURO),MealType.REGULAR);	
 		manager.saveMeal(m2);
