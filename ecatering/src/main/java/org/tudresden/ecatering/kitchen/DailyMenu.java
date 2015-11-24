@@ -6,10 +6,14 @@ import javax.persistence.*;
 
 @Entity
 public class DailyMenu {
+	
+	@Id @GeneratedValue
+	private Long id;
 
 	@ManyToOne
 	private Menu menu;
 	//Attributen
+	@OneToMany
 	private List<Meal> dailyMeals;
 	private Day day;
 	
