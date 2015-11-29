@@ -1,58 +1,60 @@
 package org.tudresden.ecatering.kitchen;
 
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.salespointframework.catalog.ProductIdentifier;
+
 import org.tudresden.ecatering.stock.Ingredient;
-
-import org.springframework.util.Assert;
-
-import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.core.SalespointIdentifier;
 
 
 
 
 @Entity
-public class Recipe extends AbstractEntity<SalespointIdentifier> {
+public class Recipe implements Serializable {
 	
-	@Id
-	@Column(name="RECIPE_ID")
-	@GeneratedValue
-	private int id;
-	private static final long serialVersionUID = 360216464547732101L;
+	private static final long serialVersionUID = -3132500271571779420L;
 
-	
+
+	@Id 
+	@GeneratedValue 
+	@Column(name = "RECIPE_ID", insertable = false, updatable = false)
+	private long id;
+
+
 	private String description;
 	
-	@OneToMany(targetEntity=Ingredient.class, mappedBy="recipe") private List<Ingredient> ingredients;
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List<Ingredient> ingredients = new ArrayList<Ingredient>();
+	
 		
 	private ProductIdentifier mealID;
-	
-	private RecipeIdentifier recipeID;
-	
-	
-
 	
 	@SuppressWarnings("unused")
 	private Recipe() {}	
 	
+	
 	public Recipe(String description, List<Ingredient> ingredients,ProductIdentifier mealID) {
-		super();
-		
 		this.description = description;
 		this.mealID = mealID;
 		this.ingredients = ingredients;
-		this.recipeID = new RecipeIdentifier();
 		
 		this.checkIngredients();
-
+				
+		
 	}
 	
 	
@@ -64,7 +66,8 @@ public class Recipe extends AbstractEntity<SalespointIdentifier> {
 				{
 					for(int j=i+1; j<this.ingredients.size(); j++)
 					{
-						Assert.isTrue(!this.ingredients.get(i).getProduct().equals(this.ingredients.get(j).getProduct()), "identical ingredients found");		
+						if(this.ingredients.get(i).getProduct().getName().equals(this.ingredients.get(j).getProduct().getName()))
+							throw new IllegalArgumentException ( "Recipe has multiple ingredient!" ) ;
 						}
 				}
 	}
@@ -75,6 +78,7 @@ public class Recipe extends AbstractEntity<SalespointIdentifier> {
 		return this.description;
 	}
 	
+
 	public List<Ingredient> getIngredients() {
 		
 		return this.ingredients;
@@ -86,11 +90,10 @@ public class Recipe extends AbstractEntity<SalespointIdentifier> {
 		return this.mealID;
 	}
 	
-	 public RecipeIdentifier getIdentifier() {
-		
-		return this.recipeID;
+
+	public long getID() {
+		return this.id;
 	}
-	
 	
 
 //setter
@@ -105,6 +108,28 @@ public class Recipe extends AbstractEntity<SalespointIdentifier> {
 		this.ingredients = ingredients;
 		this.checkIngredients();
 	}
+
+
+	@Override
+	public int hashCode() {	
+	     return new HashCodeBuilder(17, 37).
+	       append(super.hashCode()).
+	       append(description).
+	       append(mealID).
+	       append(ingredients).
+	       append(id).
+	       toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
+
+	@Override
+	public String toString() {
+		   return ToStringBuilder.reflectionToString(this);
+	}	
 	
 	
 }

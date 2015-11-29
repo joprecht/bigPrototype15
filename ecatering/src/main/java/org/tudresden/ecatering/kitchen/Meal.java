@@ -2,6 +2,9 @@ package org.tudresden.ecatering.kitchen;
 
 import javax.persistence.Entity;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 
@@ -44,4 +47,24 @@ public class Meal extends Product {
 	public void setHelping(Helping helping) {
 		this.helping = helping;
 	}
+	
+	@Override
+	public int hashCode() {	
+	     return new HashCodeBuilder(11, 39).
+	       append(super.hashCode()).
+	       append(type).
+	       append(helping).
+	       toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
+
+	@Override
+	public String toString() {
+		   return ToStringBuilder.reflectionToString(this);
+	}	
+	
 }

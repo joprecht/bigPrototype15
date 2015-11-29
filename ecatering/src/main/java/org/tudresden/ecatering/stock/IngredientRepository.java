@@ -32,5 +32,4 @@ public interface IngredientRepository extends Inventory<Ingredient> {
 	 * @param type must not be {@literal null}.
 	 * @return
 	 */
-	
 }

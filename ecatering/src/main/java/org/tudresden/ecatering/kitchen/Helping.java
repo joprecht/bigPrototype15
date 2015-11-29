@@ -1,5 +1,7 @@
 package org.tudresden.ecatering.kitchen;
 
+
+
 public enum Helping {
 	
 	REGULAR(1.0d), SMALL(0.5d);
@@ -14,4 +16,6 @@ public enum Helping {
 		  
 		  return helpingFactor;
 	  }
+	  
+	  
 }

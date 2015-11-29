@@ -16,26 +16,32 @@
 package org.tudresden.ecatering.stock;
 
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
+import static org.salespointframework.core.Currencies.*;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.inventory.InventoryItem;
 import org.salespointframework.quantity.Quantity;
-import org.tudresden.ecatering.kitchen.Recipe;
 
 
 @Entity
 public class Ingredient extends InventoryItem {
 
-	private static final long serialVersionUID = 1602164805477720501L;
 	
-	@ManyToOne
-	private Recipe recipe;
 
-	private LocalDateTime expirationDate;
+	private static final long serialVersionUID = 8953308785426506433L;
+
+	
+	private LocalDate expirationDate;
+	
+	
 
 	
 //need default constructor	
@@ -43,15 +49,51 @@ public class Ingredient extends InventoryItem {
 	private Ingredient() {}
 	
 
-	public Ingredient(Product product,Quantity quantity,LocalDateTime expirationDate) {
+	public Ingredient(String name, Money price, Quantity quantity,LocalDate expirationDate) {
 
-		super(product, quantity);
+		super(new Product(name, price, quantity.getMetric()), quantity);
+		
+				if(expirationDate!=null)
+					if(expirationDate.isBefore(LocalDate.now()))
+						throw new IllegalArgumentException("expirationDate already expired");
 
 		this.expirationDate = expirationDate;
 	}
+	
+	public Ingredient(String name, Quantity quantity) {
 
-	public LocalDateTime getExpirationDate() {
+		this(name, Money.of(0, EURO), quantity,null);
+	}
+	
+	public Ingredient(String name, Money price, Quantity quantity) {
+
+		this(name, price, quantity,null);
+	}
+	
+
+	public LocalDate getExpirationDate() {
 		return this.expirationDate;
 	}
+	
+	@Override
+	public int hashCode() {	
+		
+		
+	     return new HashCodeBuilder(19, 91).
+	       append(super.hashCode()).
+	       append(expirationDate).
+	       toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
+
+	@Override
+	public String toString() {
+		   return ToStringBuilder.reflectionToString(this);
+	}	
+	
 
 }

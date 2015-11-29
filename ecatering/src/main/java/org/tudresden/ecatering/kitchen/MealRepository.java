@@ -10,5 +10,6 @@ public interface MealRepository extends Catalog<Meal> {
 	 * @param type must not be {@literal null}.
 	 * @return
 	 */
+	Iterable<Meal> findByType(MealType type);
 }
 

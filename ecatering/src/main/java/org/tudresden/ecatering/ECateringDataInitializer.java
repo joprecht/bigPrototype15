@@ -2,13 +2,14 @@ package org.tudresden.ecatering;
 
 import static org.salespointframework.core.Currencies.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.javamoney.moneta.Money;
-import org.salespointframework.catalog.Product;
 import org.salespointframework.core.DataInitializer;
+import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
@@ -19,6 +20,7 @@ import org.springframework.util.Assert;
 import org.tudresden.ecatering.kitchen.KitchenManager;
 import org.tudresden.ecatering.kitchen.Meal;
 import org.tudresden.ecatering.kitchen.MealType;
+import org.tudresden.ecatering.kitchen.MenuRepository;
 import org.tudresden.ecatering.kitchen.Recipe;
 import org.tudresden.ecatering.kitchen.RecipeRepository;
 import org.tudresden.ecatering.stock.Ingredient;
@@ -35,7 +37,7 @@ public class ECateringDataInitializer implements DataInitializer {
 	private final KitchenManager kitchenManager;
 
 	@Autowired
-	public ECateringDataInitializer(IngredientRepository inventory, MealRepository mealRepo, RecipeRepository recipeRepo,
+	public ECateringDataInitializer(IngredientRepository inventory, MealRepository mealRepo, RecipeRepository recipeRepo, MenuRepository menuRepo,
 			UserAccountManager userAccountManager) {
 
 		Assert.notNull(inventory, "Inventory must not be null!");
@@ -44,7 +46,7 @@ public class ECateringDataInitializer implements DataInitializer {
 
 		this.userAccountManager = userAccountManager;
 		this.stockManager = new StockManager(inventory);
-		this.kitchenManager = new KitchenManager(mealRepo, recipeRepo);
+		this.kitchenManager = new KitchenManager(mealRepo, recipeRepo, menuRepo);
 	}
 	
 	@Override
@@ -57,56 +59,7 @@ public class ECateringDataInitializer implements DataInitializer {
 
 	}
 	
-	private void initializeRecipeRepo() {
-		
-				
-		
-		Product p1 = new Product("Pizzateig",Money.of(0.79, EURO));
-		Quantity q1 = Quantity.of(1);
-		LocalDateTime expDate1 = LocalDateTime.of(2015, 12, 24, 0, 0);
-		
-		Product p2 = new Product("Tomatensauce",Money.of(2.49, EURO));
-		Quantity q2 = Quantity.of(1);
-		LocalDateTime expDate2 = LocalDateTime.of(2015, 11, 5, 0, 0);
-		
-				
-		Ingredient in1 = new Ingredient(p1,q1, expDate1);
-		Ingredient in2 = new Ingredient(p2,q2, expDate2);
-		
-		List<Ingredient> inList = new ArrayList<Ingredient>();
-		inList.add(in1);
-		inList.add(in2);
-		
-		//erstes Objekt aus der Liste von Meals mit dem Namen "Pizza"
-		Iterable<Meal> pizzaMeals = kitchenManager.findMealsByName("Pizza");
-						Meal meal = pizzaMeals.iterator().next();
-						Recipe recipe = kitchenManager.createRecipe("Pizza machen", inList, meal.getIdentifier());
-						kitchenManager.saveRecipe(recipe);
-	}
-	
-	private void initializeMealRepo() {
-		
-		Meal m1 = kitchenManager.createMeal("Pizza", Money.of(4.50, EURO), MealType.REGULAR);
-		Meal m2 = kitchenManager.createMeal("Milchreis", Money.of(2.50, EURO), MealType.DIET);
-		
-		kitchenManager.saveMeal(m1);
-		kitchenManager.saveMeal(m2);
-
-	}
-
-	private void initializeInventory() {
-
-		Product product1 = new Product("Quark",Money.of(0.79, EURO));
-		Product product2 = new Product("Jagdwurst",Money.of(1.45, EURO));
-		Quantity menge = Quantity.of(2);
-		
-		Ingredient in1 = stockManager.createIngredient(product1,menge,LocalDateTime.of(2015, 12, 24, 0, 0));
-		stockManager.saveIngredient(in1);
-		Ingredient in2 = stockManager.createIngredient(product2,menge,LocalDateTime.of(2015, 11, 30, 0, 0));
-		stockManager.saveIngredient(in2);
-	}
-
-	private void initializeUsers() {
+private void initializeUsers() {
 
 		
 		if (userAccountManager.findByUsername("koch").isPresent()) {
@@ -120,4 +73,58 @@ public class ECateringDataInitializer implements DataInitializer {
 		userAccountManager.save(ua2);
 
 	}
+	
+	private void initializeInventory() {
+		
+		//Inventar wird gefuellt mit Zutaten bestehend aus Produkt, Menge und Haltbarkeit
+		Quantity menge1 = Quantity.of(0.500, Metric.LITER);
+		Quantity menge2 = Quantity.of(1.500, Metric.KILOGRAM);
+		
+		
+		Ingredient in1 = stockManager.createIngredient("Tomatensauce",Money.of(0.79, EURO),menge1,LocalDate.of(2015, Month.DECEMBER, 24));
+		stockManager.saveIngredient(in1);
+		//zweimal Jagdwurst mit unterschiedlicher Haltbarkeit
+		Ingredient in2 = stockManager.createIngredient("Jagdwurst",Money.of(1.45, EURO),menge2,LocalDate.of(2015, Month.DECEMBER, 13));
+		stockManager.saveIngredient(in2);
+		Ingredient in3 = stockManager.createIngredient("Jagdwurst",Money.of(1.45, EURO),menge2,LocalDate.of(2016, Month.JANUARY, 13));
+		stockManager.saveIngredient(in3);
+	}
+	
+	private void initializeMealRepo() {
+		
+		Meal m1 = kitchenManager.createMeal("Pizza", Money.of(4.50, EURO), MealType.REGULAR);
+		Meal m2 = kitchenManager.createMeal("Milchreis", Money.of(2.50, EURO), MealType.DIET);
+		
+		kitchenManager.saveMeal(m1);
+		kitchenManager.saveMeal(m2);
+
+	}
+	
+	private void initializeRecipeRepo() {
+		
+				
+		
+		Quantity q1 = Quantity.of(0.150, Metric.KILOGRAM);
+		
+		Quantity q2 = Quantity.of(0.025, Metric.LITER);
+		
+				
+		Ingredient in1 = kitchenManager.createIngredient("Pizzateig", q1);
+		Ingredient in2 = kitchenManager.createIngredient("Tomatensauce", q2);
+		
+		List<Ingredient> inList = new ArrayList<Ingredient>();
+		inList.add(in1);
+		inList.add(in2);
+		
+		//erstes Objekt aus der Liste von Meals mit dem Namen "Pizza"
+		Iterable<Meal> pizzaMeals = kitchenManager.findMealsByName("Pizza");
+						Meal meal = pizzaMeals.iterator().next();
+						Recipe recipe = kitchenManager.createRecipe("Pizza machen", inList, meal.getIdentifier());
+						kitchenManager.saveRecipe(recipe);
+	}
+	
+
+
+	
+
 }

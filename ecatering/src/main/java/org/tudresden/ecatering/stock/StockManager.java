@@ -1,11 +1,11 @@
 package org.tudresden.ecatering.stock;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.Optional;
 
-import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.ProductIdentifier;
+import org.javamoney.moneta.Money;
+import org.salespointframework.inventory.InventoryItemIdentifier;
 import org.salespointframework.quantity.Quantity;
 
 public class StockManager {
@@ -22,14 +22,21 @@ public class StockManager {
 		return this.ingredients.findAll();
 	}
 	
-	public Optional<Ingredient> findIngredientByProductIdentifier(ProductIdentifier identifier) {
+	public Iterable<Ingredient> findIngredientsByName(String name) {
 		
-		return this.ingredients.findByProductIdentifier(identifier);
+		Iterable<Ingredient> ingredientsResult = this.findAllIngredients();
+		Iterator<Ingredient> iter = ingredientsResult.iterator();
+		while(iter.hasNext())
+		{
+			if(!iter.next().getProduct().getName().equals(name))
+				iter.remove();
+		}
+		
+		return ingredientsResult;
 	}
 	
-	public Optional<Ingredient> findIngredientByProduct(Product product) {
-		
-		return this.ingredients.findByProduct(product);
+	public Optional<Ingredient> findIngredientByIdentifier(InventoryItemIdentifier identifier) {
+		return this.ingredients.findOne(identifier);
 	}
 	
 	
@@ -40,34 +47,29 @@ public class StockManager {
 		
 		while(iter.hasNext())
 		{
-			if(iter.next().getExpirationDate().isAfter(LocalDateTime.now()))
-			{
-				iter.remove();
-			}
+			LocalDate expirationDate = iter.next().getExpirationDate();
+				if(expirationDate == null || expirationDate.isAfter(LocalDate.now()))
+					{
+					iter.remove();
+					}
+				
 		}
 		
 		return allIngredients;
 		
 	}
 	
-	public Ingredient createIngredient(Product product,Quantity quantity,LocalDateTime expirationDate) {
-		Ingredient ingredient = new Ingredient(product,quantity,expirationDate);
+	public Ingredient createIngredient(String name,Money price,Quantity quantity,LocalDate expirationDate) {
+		Ingredient ingredient = new Ingredient(name,price,quantity,expirationDate);
+		return ingredient;
+	}
+	
+	public Ingredient createIngredient(String name,Money price,Quantity quantity) {
+		Ingredient ingredient = new Ingredient(name,price,quantity);
 		return ingredient;
 	}
 	
 	public Ingredient saveIngredient(Ingredient ingredient) {
-
-		Iterable<Ingredient> allIngredients = this.findAllIngredients();
-		Iterator<Ingredient> iter = allIngredients.iterator();
-		
-		while(iter.hasNext())
-		{
-			if(iter.next().getProduct().getName().equals(ingredient.getProduct().getName()))
-					{
-						System.out.println("Gleiche items im system:"+iter.next().getProduct().getName()+" und "+ingredient.getProduct().getName());
-						return ingredient;
-					}
-		}
 		
 		
 		this.ingredients.save(ingredient);
