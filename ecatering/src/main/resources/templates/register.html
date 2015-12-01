@@ -3,6 +3,7 @@
 <html class="mdl-js" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="/resources/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="/resources/css/newStyle.css" />
 		<link rel="stylesheet" type="text/css" href="/resources/css/material.min.css" />
@@ -48,9 +49,17 @@
 			<main class="mdl-layout__content">
 			<p class="login_screen" th:text="#{register.welcome}">Willkommen beim eCatering.</p>
 			<form action="registerUser" class="login_screen">
-				<input type="text" name="username" placeholder="Username"/><br/>
-				<input type="password" name="password" placeholder="Password"/><br/>
-				<input type="submit" value="Anmelden"/>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="username"/>
+        <label class="mdl-textfield__label" for="username">Username</label>
+      </div>
+      <br/>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="password"/>
+        <label class="mdl-textfield__label" for="password">Password</label>
+      </div>
+      <br/>
+				<button type="submit" value="Anmelden" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Anmelden</button>
 			</form>
 			</main>
 		</div>

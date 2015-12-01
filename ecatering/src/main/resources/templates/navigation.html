@@ -3,7 +3,9 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+		<link href="../static/resources/css/newStyle.css" rel="stylesheet" type="text/css">
 	</head>
 <body>
 	<nav th:fragment="navigation">
@@ -15,7 +17,7 @@
 
 			<li sec:authorize="isAuthenticated()" class="loginlogout">
 				<form th:action="@{/logout}" method="post">
-					<input type="submit" value="Logout" th:value="#{nav.logout}" />
+					<button type="submit" value="Zutat Hinzufügen" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" th:value="#{nav.logout}"><em class="material-icons">Logout</em></button>
 				</form>
 			</li>
 			

@@ -3,9 +3,11 @@
 <html class="mdl-js" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    	<script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="/resources/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="/resources/css/newStyle.css" />
 		<link rel="stylesheet" type="text/css" href="/resources/css/material.min.css" />
+    	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 		<title th:text="#{home.title}">eCatering</title>
 	</head>
 <body>
@@ -53,22 +55,48 @@
 			<table class="login_screen" style="border-collapse: collapse;">
 				<tr>
 					<th th:text="#{createIngredient.name}">Name</th>
-					<th th:text="#{createIngredient.quantity}">Anzahl</th>
+				  <th th:text="#{createIngredient.quantity}">Anzahl</th>
 					<th th:text="#{createIngredient.price}">Preis</th>
 					<th th:text="#{createIngredient.expirationDate}">Ablaufdatum</th>
 				</tr>
 				<tr>
-					<td><input type="text" name="name" placeholder="Zutaten Name" autofocus="autofocus"/></td>
-					<td><input type="number" name="quantity" placeholder="Anzahl"/></td>
-					<td><input type="text" pattern="(^\d+(\.)\d{2}$)" name="price" placeholder="Preis"/></td>
 					<td>
-					<input type="number" name="DD" placeholder="TT" style="width:35px"/>
-					<input type="number" name="MM" placeholder="MM" style="width:40px"/>
-					<input type="number" name="YYYY" placeholder="YYYY" style="width:55px"/>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input name="name" class="mdl-textfield__input" type="text" id="name"  autofocus=""/>
+        <label class="mdl-textfield__label" for="name">Zutaten Name</label>
+      </div></td>
+					<td>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input name="quantity" class="mdl-textfield__input" type="text" id="quantity" pattern="-?[0-9]*(\.[0-9]+)?" min="0"/>
+        <label class="mdl-textfield__label" for="quantity">Anzahl</label>
+        <span class="mdl-textfield__error">Zahl eingeben!</span>
+      </div></td>
+					<td>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input name="price" class="mdl-textfield__input" type="text" pattern="(^\d+(\.)\d{2}$)" id="price"/>
+        <label class="mdl-textfield__label" for="price">Preis</label>
+        <span class="mdl-textfield__error">Geldbetrag eingeben!</span>
+      </div></td>
+					<td>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width:35px">
+        <input name="DD" class="mdl-textfield__input" type="number" id="DD" min="1" max="31" style="width:35px"/>
+        <label class="mdl-textfield__label" for="DD">TT</label>
+        <span class="mdl-textfield__error">Tag eingeben!</span>
+      </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width:45px">
+        <input name="MM" class="mdl-textfield__input" type="number" id="MM" min="1" max="12" style="width:45px"/>
+        <label class="mdl-textfield__label" for="MM">MM</label>
+        <span class="mdl-textfield__error">Monat eingeben!</span>
+      </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width:55px">
+        <input name="YYYY" class="mdl-textfield__input" type="number" id="YYYY" min="2015" style="width:55px"/>
+        <label class="mdl-textfield__label" for="YY">JJJJ</label>
+        <span class="mdl-textfield__error">Jahr eingeben!</span>
+      </div>
 					</td>
 				</tr>
 			</table><br/><br/>
-			<input type="submit" value="Zutat Hinzufügen" />
+			<button type="submit" value="Zutat Hinzufügen" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect"><em class="material-icons">add</em></button>
 			</form>
 			</main>
 		</div>

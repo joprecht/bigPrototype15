@@ -3,6 +3,7 @@
 <html class="mdl-js" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    	<script src=".../resources/js/material.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="/resources/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="/resources/css/newStyle.css" />
 		<link rel="stylesheet" type="text/css" href="/resources/css/material.min.css" />
@@ -56,7 +57,7 @@
 					<th th:text="#{createMeal.type}">Typ</th>
 				</tr>
 				<tr>
-					<td><input type="text" name="name" placeholder="Gericht Name" autofocus="autofocus"/></td>
+					<td><input type="text" name="name" placeholder="Gericht Name" autofocus=""/></td>
 					<td><input type="text" pattern="(^\d+(\.)\d{2}$)" name="price" placeholder="Preis"/></td>
 					<td><select name="type">
 						<option value="">Fleisch</option>
