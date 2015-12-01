@@ -6,7 +6,7 @@
 		     }
 		     else {
 		          var newdiv = document.createElement('div');
-		          newdiv.innerHTML = "<input type='text' name='ing' placeholder='Zutat'/> <input type='number' name='quan' placeholder='Anzahl' style='width:60px'/>";
+		          newdiv.innerHTML = "<input type='text' name='ing' placeholder='Zutat'/> <input type='text' pattern='(^\d+(\.)\d{2}$)' name='quan' placeholder='Anzahl' style='width:60px'/><select name='metric'><option value='KILOGRAM'>Kilo</option><option value='LITER'>Liter</option><option value='UNIT'>Stück</option></select>";
 		          document.getElementById(divName).appendChild(newdiv);
 		          counter++;
 		          }

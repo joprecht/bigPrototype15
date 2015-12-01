@@ -141,42 +141,50 @@ class KitchenController {
 	}
 	
 	@RequestMapping(value = "/saveRecipe", method = RequestMethod.POST)
-	public String saveRecipe(@RequestParam("name") String name, @RequestParam("meal") String meal, @RequestParam("ing") ArrayList<String> ing, @RequestParam("quan") ArrayList<Integer> quan) {
+	public String saveRecipe(@RequestParam("name") String name, @RequestParam("meal") String meal, @RequestParam("ing") ArrayList<String> ing, @RequestParam("quan") ArrayList<Double> quan, @RequestParam("metric") ArrayList<String> metric) {
 		//Check if I can send arrays to java if the namefields are called array[]
 		
-//		if(ing.size()!=quan.size()){
-//			
-//		}
+		if(ing.size()!=quan.size()){
+			System.out.println("Error Size differernt");
+			return "redirect:/createRecipe";
+		}
 		
-//		List<Ingredient> inList = new ArrayList<Ingredient>();
-//		System.out.println("Max Ing"+ing.size()+"Max Quan"+quan.size());
-//		for(int i=0; i < ing.size(); i++){
-//			
-//		System.out.println("Ingreidents"+ing.get(i)+" Quantity"+quan.get(i));
-//
-//		
-////		Product p1 = new Product(ing.get(i),Money.of(0.00, EURO));
-////		Quantity q1 = Quantity.of(quan.get(i));
-////		LocalDateTime expDate1 = LocalDateTime.of(2015, 12, 24, 0, 0);
-//		
-//		//Ingredient in1 = new Ingredient(p1,q1,expDate1);
-//		
-//		inList.add(new Ingredient(new Product(ing.get(i),Money.of(0.00, EURO)),Quantity.of(quan.get(i)),LocalDateTime.of(2015, 12, 24, 0, 0)));
-//
-//		}
-//		
-//	
-//				Iterable<Meal> pizzaMeals = kitchenManager.findMealsByName(meal);
-//				Meal meals = pizzaMeals.iterator().next();
-//				Recipe recipe = kitchenManager.createRecipe(name, inList, meals.getIdentifier());
-//				kitchenManager.saveRecipe(recipe);
-		
+		List<Ingredient> inList = new ArrayList<Ingredient>();
+		System.out.println("Max Ing"+ing.size()+"Max Quan"+quan.size());
+		for(int i=0; i < ing.size(); i++){
+			
+		System.out.println("Ingreidents"+ing.get(i)+" Quantity"+quan.get(i));
 
 		
-						
+		for(Metric m : Metric.values())
+	    {
+	      //System.out.println(m.name());
+	      if(m.name().contains(metric.get(i)))
+	      {
+	        //System.out.println("Metric: "+m.name());
+	        System.out.println("Ingredient "+ing.get(i)+" Quantity "+quan.get(i)+" Metric "+m.name());
+	        inList.add(KitchenManager.createIngredient(ing.get(i), Quantity.of(quan.get(i), m)));
+	      }
+	    }
 		
 		
+			
+		}
+		
+	
+				Iterable<Meal> pizzaMeals = kitchenManager.findMealsByName(meal);
+				Meal meals = pizzaMeals.iterator().next();
+				Recipe recipe = KitchenManager.createRecipe(name, inList, meals.getIdentifier());
+				kitchenManager.saveRecipe(recipe);
+		
+
 		return "redirect:/createRecipe";
+	}
+	
+	@RequestMapping("/listRecipes")
+	public String listRecipes(ModelMap modelMap) {
+		modelMap.addAttribute("allRecipes", kitchenManager.findAllRecipes());
+		return "listRecipes";
 	}
 
 }
