@@ -17,16 +17,16 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.tudresden.ecatering.kitchen.KitchenManager;
-import org.tudresden.ecatering.kitchen.Meal;
-import org.tudresden.ecatering.kitchen.MealType;
-import org.tudresden.ecatering.kitchen.MenuRepository;
-import org.tudresden.ecatering.kitchen.Recipe;
-import org.tudresden.ecatering.kitchen.RecipeRepository;
-import org.tudresden.ecatering.stock.Ingredient;
-import org.tudresden.ecatering.stock.IngredientRepository;
-import org.tudresden.ecatering.stock.StockManager;
-import org.tudresden.ecatering.kitchen.MealRepository;
+import org.tudresden.ecatering.model.kitchen.KitchenManager;
+import org.tudresden.ecatering.model.kitchen.Meal;
+import org.tudresden.ecatering.model.kitchen.MealRepository;
+import org.tudresden.ecatering.model.kitchen.MealType;
+import org.tudresden.ecatering.model.kitchen.MenuRepository;
+import org.tudresden.ecatering.model.kitchen.Recipe;
+import org.tudresden.ecatering.model.kitchen.RecipeRepository;
+import org.tudresden.ecatering.model.stock.Ingredient;
+import org.tudresden.ecatering.model.stock.IngredientRepository;
+import org.tudresden.ecatering.model.stock.StockManager;
 
 
 @Component
@@ -81,19 +81,19 @@ private void initializeUsers() {
 		Quantity menge2 = Quantity.of(1.500, Metric.KILOGRAM);
 		
 		
-		Ingredient in1 = stockManager.createIngredient("Tomatensauce",Money.of(0.79, EURO),menge1,LocalDate.of(2015, Month.DECEMBER, 24));
+		Ingredient in1 = StockManager.createIngredient("Tomatensauce",Money.of(0.79, EURO),menge1,LocalDate.of(2015, Month.DECEMBER, 24));
 		stockManager.saveIngredient(in1);
 		//zweimal Jagdwurst mit unterschiedlicher Haltbarkeit
-		Ingredient in2 = stockManager.createIngredient("Jagdwurst",Money.of(1.45, EURO),menge2,LocalDate.of(2015, Month.DECEMBER, 13));
+		Ingredient in2 = StockManager.createIngredient("Jagdwurst",Money.of(1.45, EURO),menge2,LocalDate.of(2015, Month.DECEMBER, 13));
 		stockManager.saveIngredient(in2);
-		Ingredient in3 = stockManager.createIngredient("Jagdwurst",Money.of(1.45, EURO),menge2,LocalDate.of(2016, Month.JANUARY, 13));
+		Ingredient in3 = StockManager.createIngredient("Jagdwurst",Money.of(1.45, EURO),menge2,LocalDate.of(2016, Month.JANUARY, 13));
 		stockManager.saveIngredient(in3);
 	}
 	
 	private void initializeMealRepo() {
 		
-		Meal m1 = kitchenManager.createMeal("Pizza", Money.of(4.50, EURO), MealType.REGULAR);
-		Meal m2 = kitchenManager.createMeal("Milchreis", Money.of(2.50, EURO), MealType.DIET);
+		Meal m1 = KitchenManager.createMeal("Pizza", Money.of(4.50, EURO), MealType.REGULAR);
+		Meal m2 = KitchenManager.createMeal("Milchreis", Money.of(2.50, EURO), MealType.DIET);
 		
 		kitchenManager.saveMeal(m1);
 		kitchenManager.saveMeal(m2);
@@ -109,8 +109,8 @@ private void initializeUsers() {
 		Quantity q2 = Quantity.of(0.025, Metric.LITER);
 		
 				
-		Ingredient in1 = kitchenManager.createIngredient("Pizzateig", q1);
-		Ingredient in2 = kitchenManager.createIngredient("Tomatensauce", q2);
+		Ingredient in1 = KitchenManager.createIngredient("Pizzateig", q1);
+		Ingredient in2 = KitchenManager.createIngredient("Tomatensauce", q2);
 		
 		List<Ingredient> inList = new ArrayList<Ingredient>();
 		inList.add(in1);
@@ -119,7 +119,7 @@ private void initializeUsers() {
 		//erstes Objekt aus der Liste von Meals mit dem Namen "Pizza"
 		Iterable<Meal> pizzaMeals = kitchenManager.findMealsByName("Pizza");
 						Meal meal = pizzaMeals.iterator().next();
-						Recipe recipe = kitchenManager.createRecipe("Pizza machen", inList, meal.getIdentifier());
+						Recipe recipe = KitchenManager.createRecipe("Pizza machen", inList, meal.getIdentifier());
 						kitchenManager.saveRecipe(recipe);
 	}
 	

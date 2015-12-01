@@ -1,4 +1,4 @@
-package org.tudresden.ecatering.kitchen;
+package org.tudresden.ecatering.model.kitchen;
 
 import javax.persistence.Entity;
 
@@ -21,7 +21,7 @@ public class Meal extends Product {
 	@SuppressWarnings({ "unused", "deprecation" })
 	private Meal() {}
 	
-	public Meal(String name, Money price,MealType type) {
+	protected Meal(String name, Money price,MealType type) {
 		
 		super(name,price);
 		this.type = type;

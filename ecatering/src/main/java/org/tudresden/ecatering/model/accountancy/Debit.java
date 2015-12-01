@@ -1,4 +1,4 @@
-package org.tudresden.ecatering.ordermanagement;
+package org.tudresden.ecatering.model.accountancy;
 
 import org.salespointframework.payment.PaymentMethod;
 

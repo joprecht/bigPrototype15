@@ -1,4 +1,4 @@
-package org.tudresden.ecatering.kitchen;
+package org.tudresden.ecatering.model.kitchen;
 
 
 import java.io.Serializable;
@@ -17,8 +17,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.salespointframework.catalog.ProductIdentifier;
-
-import org.tudresden.ecatering.stock.Ingredient;
+import org.tudresden.ecatering.model.stock.Ingredient;
 
 
 
@@ -47,7 +46,7 @@ public class Recipe implements Serializable {
 	private Recipe() {}	
 	
 	
-	public Recipe(String description, List<Ingredient> ingredients,ProductIdentifier mealID) {
+	protected Recipe(String description, List<Ingredient> ingredients,ProductIdentifier mealID) {
 		this.description = description;
 		this.mealID = mealID;
 		this.ingredients = ingredients;

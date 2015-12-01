@@ -1,4 +1,4 @@
-package org.tudresden.ecatering.kitchen;
+package org.tudresden.ecatering.model.kitchen;
 
 public enum MealType {
 	REGULAR, DIET, SPECIAL;

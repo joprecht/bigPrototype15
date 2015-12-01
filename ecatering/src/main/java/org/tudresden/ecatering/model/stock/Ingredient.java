@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tudresden.ecatering.stock;
+package org.tudresden.ecatering.model.stock;
 
 
 import java.time.LocalDate;
 
-import static org.salespointframework.core.Currencies.*;
 import javax.persistence.Entity;
 
 
@@ -49,7 +48,7 @@ public class Ingredient extends InventoryItem {
 	private Ingredient() {}
 	
 
-	public Ingredient(String name, Money price, Quantity quantity,LocalDate expirationDate) {
+	protected Ingredient(String name, Money price, Quantity quantity,LocalDate expirationDate) {
 
 		super(new Product(name, price, quantity.getMetric()), quantity);
 		
@@ -60,12 +59,9 @@ public class Ingredient extends InventoryItem {
 		this.expirationDate = expirationDate;
 	}
 	
-	public Ingredient(String name, Quantity quantity) {
-
-		this(name, Money.of(0, EURO), quantity,null);
-	}
 	
-	public Ingredient(String name, Money price, Quantity quantity) {
+	
+	protected Ingredient(String name, Money price, Quantity quantity) {
 
 		this(name, price, quantity,null);
 	}

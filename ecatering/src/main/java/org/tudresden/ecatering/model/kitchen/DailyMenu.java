@@ -1,4 +1,4 @@
-package org.tudresden.ecatering.kitchen;
+package org.tudresden.ecatering.model.kitchen;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class DailyMenu implements Serializable {
 	
 
 	//Methoden
-	public DailyMenu(Day day, List<Meal> dailyMeals)
+	protected DailyMenu(Day day, List<Meal> dailyMeals)
 	{		
 		
 		boolean hasRegularType = false;

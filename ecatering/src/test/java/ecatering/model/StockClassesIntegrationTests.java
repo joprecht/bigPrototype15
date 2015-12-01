@@ -5,9 +5,9 @@ import org.junit.Test;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.tudresden.ecatering.stock.Ingredient;
-import org.tudresden.ecatering.stock.IngredientRepository;
-import org.tudresden.ecatering.stock.StockManager;
+import org.tudresden.ecatering.model.stock.Ingredient;
+import org.tudresden.ecatering.model.stock.IngredientRepository;
+import org.tudresden.ecatering.model.stock.StockManager;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
@@ -22,13 +22,14 @@ import ecatering.AbstractIntegrationTests;
 public class StockClassesIntegrationTests extends AbstractIntegrationTests {
 	
 	
-	@Autowired IngredientRepository ingredientRepo;
+	@Autowired private IngredientRepository ingredientRepo;
+
 
 	
 	@Test
 	public void ingredientTests() {
-		
-		Ingredient testIngredient = new Ingredient("Zucker", Money.of(1.20, EURO), Quantity.of(0.500, Metric.KILOGRAM));
+			
+		Ingredient testIngredient = StockManager.createIngredient("Zucker", Money.of(1.20, EURO), Quantity.of(0.500, Metric.KILOGRAM));
 		
 		assertNotNull("Ingredient is null",testIngredient);
 		assertEquals("Name wrong or null","Zucker",testIngredient.getProduct().getName());
@@ -36,7 +37,7 @@ public class StockClassesIntegrationTests extends AbstractIntegrationTests {
 		assertEquals("Money wrong or null",Money.of(1.20, EURO),testIngredient.getProduct().getPrice());
 		assertEquals("Expiration date is not null",null,testIngredient.getExpirationDate());
 		
-		testIngredient = new Ingredient("Quark", Money.of(0.39, EURO), Quantity.of(0.250, Metric.KILOGRAM), LocalDate.of(2015, 12, 28));
+		testIngredient = StockManager.createIngredient("Quark", Money.of(0.39, EURO), Quantity.of(0.250, Metric.KILOGRAM), LocalDate.of(2015, 12, 28));
 		assertNotNull("Ingredient is null",testIngredient);
 		assertEquals("Name wrong or null","Quark",testIngredient.getProduct().getName());
 		assertEquals("Quantity wrong or null",Quantity.of(0.250, Metric.KILOGRAM),testIngredient.getQuantity());
@@ -44,13 +45,15 @@ public class StockClassesIntegrationTests extends AbstractIntegrationTests {
 		assertEquals("Expiration date is wrong or null",LocalDate.of(2015, 12, 28),testIngredient.getExpirationDate());
 	}
 	
+	
+	
 	@Test
 	public void stockManagerTests() {
 		
 		assertNotNull("Ingredient Repo is null", ingredientRepo);
 
-		
 		StockManager manager = new StockManager(ingredientRepo);
+		
 		assertNotNull("StockManager is null", manager);
 		
 		
@@ -60,14 +63,14 @@ public class StockClassesIntegrationTests extends AbstractIntegrationTests {
 		assertThat(manager.findIngredientsByName("Tomatensauce"), is(iterableWithSize(2)));
 
 		
-		Ingredient testIngredient = manager.createIngredient("Salz", Money.of(0.90, EURO), Quantity.of(0.250, Metric.KILOGRAM));
+		Ingredient testIngredient = StockManager.createIngredient("Salz", Money.of(0.90, EURO), Quantity.of(0.250, Metric.KILOGRAM));
 		assertNotNull("Ingredient is null",testIngredient);
 		assertEquals("Name wrong or null","Salz",testIngredient.getProduct().getName());
 		assertEquals("Quantity wrong or null",Quantity.of(0.250, Metric.KILOGRAM),testIngredient.getQuantity());
 		assertEquals("Money wrong or null",Money.of(0.90, EURO),testIngredient.getProduct().getPrice());
 		assertEquals("Expiration date is not null",null,testIngredient.getExpirationDate());
 
-		testIngredient = manager.createIngredient("Schokopudding", Money.of(1.20, EURO), Quantity.of(0.150, Metric.KILOGRAM), LocalDate.now());
+		testIngredient = StockManager.createIngredient("Schokopudding", Money.of(1.20, EURO), Quantity.of(0.150, Metric.KILOGRAM), LocalDate.now());
 		assertNotNull("Ingredient is null",testIngredient);
 		assertEquals("Name wrong or null","Schokopudding",testIngredient.getProduct().getName());
 		assertEquals("Quantity wrong or null",Quantity.of(0.150, Metric.KILOGRAM),testIngredient.getQuantity());

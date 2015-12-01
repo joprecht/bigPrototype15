@@ -1,4 +1,4 @@
-package org.tudresden.ecatering.kitchen;
+package org.tudresden.ecatering.model.kitchen;
 
 public enum Day {
 	MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY; 

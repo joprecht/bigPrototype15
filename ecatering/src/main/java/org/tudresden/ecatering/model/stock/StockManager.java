@@ -1,4 +1,4 @@
-package org.tudresden.ecatering.stock;
+package org.tudresden.ecatering.model.stock;
 
 import java.time.LocalDate;
 import java.util.Iterator;
@@ -7,12 +7,12 @@ import java.util.Optional;
 import org.javamoney.moneta.Money;
 import org.salespointframework.inventory.InventoryItemIdentifier;
 import org.salespointframework.quantity.Quantity;
-
 public class StockManager {
 	
 	private IngredientRepository ingredients;
 	
 	public StockManager(IngredientRepository ingredients) {
+		
 		
 		this.ingredients = ingredients;
 	}
@@ -59,12 +59,12 @@ public class StockManager {
 		
 	}
 	
-	public Ingredient createIngredient(String name,Money price,Quantity quantity,LocalDate expirationDate) {
+	public static Ingredient createIngredient(String name,Money price,Quantity quantity,LocalDate expirationDate) {
 		Ingredient ingredient = new Ingredient(name,price,quantity,expirationDate);
 		return ingredient;
 	}
 	
-	public Ingredient createIngredient(String name,Money price,Quantity quantity) {
+	public static Ingredient createIngredient(String name,Money price,Quantity quantity) {
 		Ingredient ingredient = new Ingredient(name,price,quantity);
 		return ingredient;
 	}

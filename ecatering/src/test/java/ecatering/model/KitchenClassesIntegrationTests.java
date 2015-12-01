@@ -16,18 +16,18 @@ import org.junit.Test;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.tudresden.ecatering.kitchen.DailyMenu;
-import org.tudresden.ecatering.kitchen.Day;
-import org.tudresden.ecatering.kitchen.Helping;
-import org.tudresden.ecatering.kitchen.KitchenManager;
-import org.tudresden.ecatering.kitchen.Meal;
-import org.tudresden.ecatering.kitchen.MealRepository;
-import org.tudresden.ecatering.kitchen.MealType;
-import org.tudresden.ecatering.kitchen.Menu;
-import org.tudresden.ecatering.kitchen.MenuRepository;
-import org.tudresden.ecatering.kitchen.Recipe;
-import org.tudresden.ecatering.kitchen.RecipeRepository;
-import org.tudresden.ecatering.stock.Ingredient;
+import org.tudresden.ecatering.model.kitchen.DailyMenu;
+import org.tudresden.ecatering.model.kitchen.Day;
+import org.tudresden.ecatering.model.kitchen.Helping;
+import org.tudresden.ecatering.model.kitchen.KitchenManager;
+import org.tudresden.ecatering.model.kitchen.Meal;
+import org.tudresden.ecatering.model.kitchen.MealRepository;
+import org.tudresden.ecatering.model.kitchen.MealType;
+import org.tudresden.ecatering.model.kitchen.Menu;
+import org.tudresden.ecatering.model.kitchen.MenuRepository;
+import org.tudresden.ecatering.model.kitchen.Recipe;
+import org.tudresden.ecatering.model.kitchen.RecipeRepository;
+import org.tudresden.ecatering.model.stock.Ingredient;
 
 import ecatering.AbstractIntegrationTests;
 
@@ -36,6 +36,7 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 	@Autowired MealRepository mealRepo;
 	@Autowired RecipeRepository recipeRepo;
 	@Autowired MenuRepository menuRepo;
+	
 
 	@Test
 	public void helpingTests() {
@@ -57,7 +58,7 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void mealTests() {
 		
-		Meal testMeal = new Meal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
+		Meal testMeal = KitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
 		
 		
 		assertNotNull("Meal is null",testMeal);
@@ -72,8 +73,9 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 	
 	@Test
 	public void ingredientTests() {
-				
-		Ingredient testIngredient = new Ingredient("Quark", Quantity.of(0.500, Metric.KILOGRAM));
+		
+		
+		Ingredient testIngredient = KitchenManager.createIngredient("Quark", Quantity.of(0.500, Metric.KILOGRAM));
 		
 		assertNotNull("Ingredient is null",testIngredient);
 		assertEquals("Name wrong or null","Quark",testIngredient.getProduct().getName());
@@ -88,19 +90,19 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 	public void recipeTests() {
 		
 		
-		Meal meal1 = new Meal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
+		Meal meal1 = KitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
 		
 		Quantity q1 = Quantity.of(0.500, Metric.KILOGRAM);
 		Quantity q2 = Quantity.of(3.000, Metric.KILOGRAM);
 		
-		Ingredient in1 = new Ingredient("Quark",q1);
-		Ingredient in2 = new Ingredient("Wurst",q2);
+		Ingredient in1 = KitchenManager.createIngredient("Quark",q1);
+		Ingredient in2 = KitchenManager.createIngredient("Wurst",q2);
 		
 		List<Ingredient> inList = new ArrayList<Ingredient>();
 		inList.add(in1);
 		inList.add(in2);
 		
-		Recipe testRecipe = new Recipe("Mit dem Loeffel ruehren", inList, meal1.getIdentifier());
+		Recipe testRecipe = KitchenManager.createRecipe("Mit dem Loeffel ruehren", inList, meal1.getIdentifier());
 		
 		System.out.println("RecipeIdentifier for testRecipe:"+testRecipe.getID());
 
@@ -114,7 +116,7 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		assertEquals("Description wrong or null","Mit dem Hammer schlagen",testRecipe.getDescription());
 		
 		inList = testRecipe.getIngredients();
-		inList.add(new Ingredient("Kaese",q2));
+		inList.add(KitchenManager.createIngredient("Kaese",q2));
 		testRecipe.setIngredients(inList);
 		assertEquals("List has different size",3,testRecipe.getIngredients().size());
 
@@ -125,9 +127,9 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void dailyMenuTests() {
 		
-		Meal meal1 = new Meal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
-		Meal meal2 = new Meal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
-		Meal meal3 = new Meal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
+		Meal meal1 = KitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
+		Meal meal2 = KitchenManager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
+		Meal meal3 = KitchenManager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
 
 		
 		List<Meal> meals = new ArrayList<Meal>();
@@ -135,7 +137,7 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		meals.add(meal1);
 		meals.add(meal2);
 		
-		DailyMenu testDailyMenu = new DailyMenu(Day.MONDAY,meals);
+		DailyMenu testDailyMenu = KitchenManager.createDailyMenu(Day.MONDAY,meals);
 		
 		assertNotNull("testDailyMenu is null",testDailyMenu);
 		assertEquals("wrong or null day ",Day.MONDAY,testDailyMenu.getDay());
@@ -146,9 +148,9 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void menuTests() {
 		
-		Meal meal1 = new Meal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
-		Meal meal2 = new Meal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
-		Meal meal3 = new Meal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
+		Meal meal1 = KitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
+		Meal meal2 = KitchenManager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
+		Meal meal3 = KitchenManager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
 
 		
 		List<Meal> meals = new ArrayList<Meal>();
@@ -156,11 +158,11 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		meals.add(meal1);
 		meals.add(meal2);
 		
-		DailyMenu dailyMenu1 = new DailyMenu(Day.MONDAY,meals);
-		DailyMenu dailyMenu2 = new DailyMenu(Day.TUESDAY,meals);
-		DailyMenu dailyMenu3 = new DailyMenu(Day.WEDNESDAY,meals);
-		DailyMenu dailyMenu4 = new DailyMenu(Day.THURSDAY,meals);
-		DailyMenu dailyMenu5 = new DailyMenu(Day.FRIDAY,meals);
+		DailyMenu dailyMenu1 = KitchenManager.createDailyMenu(Day.MONDAY,meals);
+		DailyMenu dailyMenu2 = KitchenManager.createDailyMenu(Day.TUESDAY,meals);
+		DailyMenu dailyMenu3 = KitchenManager.createDailyMenu(Day.WEDNESDAY,meals);
+		DailyMenu dailyMenu4 = KitchenManager.createDailyMenu(Day.THURSDAY,meals);
+		DailyMenu dailyMenu5 = KitchenManager.createDailyMenu(Day.FRIDAY,meals);
 
 		
 		List<DailyMenu> dailyMenus = new ArrayList<DailyMenu>();
@@ -170,7 +172,7 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		dailyMenus.add(dailyMenu4);
 		dailyMenus.add(dailyMenu5);
 
-		Menu testMenu = new Menu(32,dailyMenus);
+		Menu testMenu = KitchenManager.createMenu(32,dailyMenus);
 		
 		assertNotNull("testMenu is null",testMenu);
 		assertEquals("wrong or null calendarWeek",32,testMenu.getCalendarWeek());
@@ -186,8 +188,9 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		assertNotNull("Meal Repo is null", mealRepo);
 		assertNotNull("Recipe Repo is null", recipeRepo);
 
-
 		KitchenManager manager = new KitchenManager(mealRepo, recipeRepo, menuRepo);	
+
+
 		assertNotNull("KitchenManager is null", manager);
 		
 		//2 meals from data initializer
@@ -201,14 +204,14 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		assertThat(manager.findMealsByName("Spaghetti"), is(iterableWithSize(0)));
 	
 	//meal handling section
-		Meal m1 = manager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);	
+		Meal m1 = KitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);	
 		manager.saveMeal(m1);	
 		
 				
 		assertThat(manager.findMealsByName("Spaghetti"), is(iterableWithSize(1)));
 		assertThat(manager.findMealsByMealType(MealType.REGULAR), is(iterableWithSize(2)));
 		
-		Meal m2 = manager.createMeal("Pizza", Money.of(6.50, EURO),MealType.REGULAR);	
+		Meal m2 = KitchenManager.createMeal("Pizza", Money.of(6.50, EURO),MealType.REGULAR);	
 		manager.saveMeal(m2);
 		Optional<Meal> result = manager.findMealByIdentifier(m2.getIdentifier());
 		
@@ -221,30 +224,32 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		Quantity q2 = Quantity.of(0.025, Metric.LITER);
 		
 				
-		Ingredient in1 = manager.createIngredient("Pizzateig", q1);
-		Ingredient in2 = manager.createIngredient("Tomatensauce", q2);
+		Ingredient in1 = KitchenManager.createIngredient("Pizzateig", q1);
+		Ingredient in2 = KitchenManager.createIngredient("Tomatensauce", q2);
 		
 		List<Ingredient> inList = new ArrayList<Ingredient>();
 		inList.add(in1);
 		inList.add(in2);
 		
 	//recipe handling section
-		Recipe r1 = manager.createRecipe("Pizza machen", inList, m2.getIdentifier());
+		Recipe r1 = KitchenManager.createRecipe("Pizza machen", inList, m2.getIdentifier());
 		manager.saveRecipe(r1);
 		
 
 		
 		List<Ingredient> inList2 = new ArrayList<Ingredient>();
-		inList2.add(manager.createIngredient("Nudeln", Quantity.of(0.130, Metric.KILOGRAM)));
-		inList2.add(manager.createIngredient("Tomatensauce", Quantity.of(0.100, Metric.LITER)));
+		inList2.add(KitchenManager.createIngredient("Nudeln", Quantity.of(0.130, Metric.KILOGRAM)));
+		inList2.add(KitchenManager.createIngredient("Tomatensauce", Quantity.of(0.100, Metric.LITER)));
 		
-		Recipe r2 = manager.createRecipe("Nudeln kochen...", inList2, m1.getIdentifier());
+		Recipe r2 = KitchenManager.createRecipe("Nudeln kochen...", inList2, m1.getIdentifier());
 		manager.saveRecipe(r2);
 
 		
 		//error throwing when meal isnt in repo (for testing, uncomment it)		
-		//Meal fakeMeal = manager.createMeal("Gibts gar nicht", Money.of(4.50, EURO),MealType.REGULAR);
-		//Recipe r2 = manager.createRecipe("Pizza machen", inList, fakeMeal.getIdentifier());
+	/*	Meal fakeMeal = manager.createMeal("Gibts gar nicht", Money.of(4.50, EURO),MealType.REGULAR);
+		Recipe r3 = manager.createRecipe("Pizza machen", inList, fakeMeal.getIdentifier());
+		manager.saveRecipe(r3);
+	*/	
 
 		assertThat(manager.findAllRecipes(), is(iterableWithSize(3)));
 		Iterator<Recipe> iter = manager.findAllRecipes().iterator();
@@ -266,25 +271,25 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		
 	//menu handling section
 		
-		Meal mealMonday1 = manager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
-		Meal mealMonday2 = manager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
-		Meal mealMonday3 = manager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
+		Meal mealMonday1 = KitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
+		Meal mealMonday2 = KitchenManager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
+		Meal mealMonday3 = KitchenManager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
 		
-		Meal mealTuesday1 = manager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
-		Meal mealTuesday2 = manager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
-		Meal mealTuesday3 = manager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
+		Meal mealTuesday1 = KitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
+		Meal mealTuesday2 = KitchenManager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
+		Meal mealTuesday3 = KitchenManager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
 		
-		Meal mealWednesday1 = manager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
-		Meal mealWednesday2 = manager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
-		Meal mealWednesday3 = manager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
+		Meal mealWednesday1 = KitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
+		Meal mealWednesday2 = KitchenManager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
+		Meal mealWednesday3 = KitchenManager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
 		
-		Meal mealThursday1 = manager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
-		Meal mealThursday2 = manager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
-		Meal mealThursday3 = manager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
+		Meal mealThursday1 = KitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
+		Meal mealThursday2 = KitchenManager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
+		Meal mealThursday3 = KitchenManager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
 		
-		Meal mealFriday1 = manager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
-		Meal mealFriday2 = manager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
-		Meal mealFriday3 = manager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
+		Meal mealFriday1 = KitchenManager.createMeal("Spaghetti", Money.of(4.50, EURO),MealType.REGULAR);
+		Meal mealFriday2 = KitchenManager.createMeal("Feldsalat ohne allem", Money.of(2.50, EURO),MealType.DIET);
+		Meal mealFriday3 = KitchenManager.createMeal("Spaghetti vegan", Money.of(3.50, EURO),MealType.SPECIAL);
 
 		
 		List<Meal> mondayMeals = new ArrayList<Meal>();
@@ -314,11 +319,11 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 		
 		
 		
-		DailyMenu dailyMenu1 = manager.createDailyMenu(Day.MONDAY,mondayMeals);
-		DailyMenu dailyMenu2 = manager.createDailyMenu(Day.TUESDAY,tuesdayMeals);
-		DailyMenu dailyMenu3 = manager.createDailyMenu(Day.WEDNESDAY,wednesdayMeals);
-		DailyMenu dailyMenu4 = manager.createDailyMenu(Day.THURSDAY,thursdayMeals);
-		DailyMenu dailyMenu5 = manager.createDailyMenu(Day.FRIDAY,fridayMeals);
+		DailyMenu dailyMenu1 = KitchenManager.createDailyMenu(Day.MONDAY,mondayMeals);
+		DailyMenu dailyMenu2 = KitchenManager.createDailyMenu(Day.TUESDAY,tuesdayMeals);
+		DailyMenu dailyMenu3 = KitchenManager.createDailyMenu(Day.WEDNESDAY,wednesdayMeals);
+		DailyMenu dailyMenu4 = KitchenManager.createDailyMenu(Day.THURSDAY,thursdayMeals);
+		DailyMenu dailyMenu5 = KitchenManager.createDailyMenu(Day.FRIDAY,fridayMeals);
 
 		
 		List<DailyMenu> dailyMenus = new ArrayList<DailyMenu>(); 
@@ -330,7 +335,7 @@ public class KitchenClassesIntegrationTests extends AbstractIntegrationTests {
 
 	
 		
-		Menu testMenu = manager.createMenu(53, dailyMenus);
+		Menu testMenu = KitchenManager.createMenu(53, dailyMenus);
 		
 		assertThat(manager.findAllMenus(), is(iterableWithSize(0)));
 		

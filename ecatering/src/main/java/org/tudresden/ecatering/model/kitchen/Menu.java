@@ -1,4 +1,4 @@
-package org.tudresden.ecatering.kitchen;
+package org.tudresden.ecatering.model.kitchen;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,7 +41,7 @@ public class Menu implements Serializable {
 	@SuppressWarnings("unused")
 	private Menu(){}
 	
-	public Menu(int calendarWeek, List<DailyMenu> dailyMenus)
+	protected Menu(int calendarWeek, List<DailyMenu> dailyMenus)
 	{		
 		
 		boolean hasMondayMeal = false;
