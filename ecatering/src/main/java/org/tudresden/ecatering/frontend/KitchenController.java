@@ -2,7 +2,7 @@ package org.tudresden.ecatering.frontend;
 
 import static org.salespointframework.core.Currencies.EURO;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -10,17 +10,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.tudresden.ecatering.model.kitchen.KitchenManager;
+import org.tudresden.ecatering.model.kitchen.Meal;
+import org.tudresden.ecatering.model.kitchen.MealRepository;
+import org.tudresden.ecatering.model.kitchen.MealType;
+import org.tudresden.ecatering.model.kitchen.MenuRepository;
+import org.tudresden.ecatering.model.kitchen.RecipeRepository;
+import org.tudresden.ecatering.model.stock.Ingredient;
+import org.tudresden.ecatering.model.stock.IngredientRepository;
+import org.tudresden.ecatering.model.stock.StockManager;
 import org.javamoney.moneta.Money;
-import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Quantity;
-import org.tudresden.ecatering.stock.Ingredient;
-import org.tudresden.ecatering.stock.IngredientRepository;
-import org.tudresden.ecatering.kitchen.KitchenManager;
-import org.tudresden.ecatering.kitchen.Meal;
-import org.tudresden.ecatering.kitchen.MealRepository;
-import org.tudresden.ecatering.stock.StockManager;
-import org.tudresden.ecatering.kitchen.MealType;
-import org.tudresden.ecatering.kitchen.RecipeRepository;
 
 
 @Controller
@@ -31,10 +31,10 @@ class KitchenController {
 	private final KitchenManager kitchenManager;
 
 	@Autowired
-	public KitchenController(IngredientRepository inventory, MealRepository mealRepo,RecipeRepository recipes) {
+	public KitchenController(IngredientRepository inventory, MealRepository mealRepo,RecipeRepository recipes, MenuRepository menus) {
 
 		this.stockManager = new StockManager(inventory);
-		this.kitchenManager = new KitchenManager(mealRepo, recipes);
+		this.kitchenManager = new KitchenManager(mealRepo, recipes, menus);
 	}
 
 
@@ -54,9 +54,8 @@ class KitchenController {
 	@RequestMapping(value = "/addIngredient", method = RequestMethod.POST)
 	public String addIngredient(@RequestParam("name") String name, @RequestParam("quantity") int quantity,@RequestParam("price") double price,@RequestParam("DD") int day,@RequestParam("MM") int month,@RequestParam("YYYY") int year) {
 		//Actually create the Ingredient
-		Product product = new Product(name,Money.of(price, EURO));
 		Quantity menge = Quantity.of(quantity);
-		Ingredient ingredient = stockManager.createIngredient(product,menge,LocalDateTime.of(year, month, day, 0, 0));
+		Ingredient ingredient = StockManager.createIngredient(name,Money.of(price, EURO),menge,LocalDate.of(year, month, day));
 		//Need to find out how we can save the date right
 		stockManager.saveIngredient(ingredient);
 		return "createIngredient";
@@ -72,12 +71,12 @@ class KitchenController {
 	@RequestMapping(value = "/addMeal", method = RequestMethod.POST)
 	public String addMenue(@RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("type") String mealType){
 		
-		Meal m1 = kitchenManager.createMeal(name, Money.of(price, EURO), MealType.REGULAR);
+		Meal m1 = KitchenManager.createMeal(name, Money.of(price, EURO), MealType.REGULAR);
 		
 		if(mealType.equals("Diet")){
-			m1 = kitchenManager.createMeal(name, Money.of(price, EURO), MealType.DIET);
+			m1 = KitchenManager.createMeal(name, Money.of(price, EURO), MealType.DIET);
 		}else if(mealType.equals("Special")){
-			m1 = kitchenManager.createMeal(name, Money.of(price, EURO), MealType.SPECIAL);
+			m1 = KitchenManager.createMeal(name, Money.of(price, EURO), MealType.SPECIAL);
 		}
 		
 		kitchenManager.saveMeal(m1);
