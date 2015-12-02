@@ -8,6 +8,8 @@
 		<link rel="stylesheet" type="text/css" href="/resources/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="/resources/css/newStyle.css" />
 		<link rel="stylesheet" type="text/css" href="/resources/css/material.min.css" />
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.light_green-light_blue.min.css" />  
+    	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 		<title th:text="#{home.title}">eCatering</title>
 	</head>
 <body>
@@ -16,6 +18,16 @@
 			<div class="mdl-layout__drawer">
 			<span class="mdl-layout-title">
                 <span th:text="#{home.title}">Best-Food-Catering</span>
+                <button id="demo-menu-lower-left"
+        			class="mdl-button mdl-js-button mdl-button--icon">
+  					<i class="material-icons">more_vert</i>
+				</button>
+
+				<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-left">
+  					<li disabled="disabled" class="mdl-menu__item">Impressum</li>
+                    <li disabled="disabled" class="mdl-menu__item">Kontakt</li>
+                    <i onclick="@{/logout}" class="material-icons">exit_to_app</i>
+				</ul>
             </span>
             <nav class="mdl-navigation">
             	<a class="mdl-navigation__link mdl-navigation__link--icon" href="#">
@@ -56,12 +68,12 @@
             	
 			</header>
 			<main class="mdl-layout__content">
-			<p class="login_screen" th:text="#{home.welcome}">Willkommen beim eCatering.</p>
+			<h2 class="login_screen" th:text="#{home.welcome}">Willkommen beim eCatering.</h2>
 			
 			<p class="login_screen" style="color:red;" th:if="${loginError}">Wrong user or password</p>
 	        <form class="login_screen" th:action="@{/login}" method="post" sec:authorize="!isAuthenticated()">
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" id="username" autofocus="" />
+        <input class="mdl-textfield__input" type="text" id="username" autofocus =""/>
         <label class="mdl-textfield__label" for="username">Username</label>
       </div><br />
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -69,13 +81,13 @@
         <label class="mdl-textfield__label" for="password">Password</label>
       </div><br />
 	            <p>Noch keinen Account? <a href="/register">Regestrieren!</a></p>
-              <button type="submit" value="Login" id="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" disabled="disabled">Login</button>
+              <button type="submit" value="Login" id="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" disabled="disabled">Login</button>
       </form>
       <script type="text/javascript" src="/resources/js/login_check.js"></script>
-      <p class="login_screen" sec:authorize="isAuthenticated()" th:text="${'Hallo ' + #authentication?.name}">Hallo Nutzer</p>
+      <h1 class="login_screen" sec:authorize="isAuthenticated()" th:text="${'Hallo ' + #authentication?.name}">Hallo Nutzer</h1>
 			
 				<form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="login_screen">
-                <button type="submit" value="Logout" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" th:value="#{nav.logout}">Logout</button>
+                <button type="submit" value="Logout" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" th:value="#{nav.logout}">Logout</button>
 	</form>
 			</main>
 		</div>
