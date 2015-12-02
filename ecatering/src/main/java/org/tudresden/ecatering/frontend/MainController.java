@@ -59,4 +59,6 @@ public class MainController {
 		
 		return "index";
 	}
+	
+	//TODO @RequestMapping für emailänderung, vornameänderung und nachnameänderung
 }
