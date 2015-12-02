@@ -183,6 +183,7 @@ class KitchenController {
 	@RequestMapping("/listRecipes")
 	public String listRecipes(ModelMap modelMap) {
 		modelMap.addAttribute("allRecipes", kitchenManager.findAllRecipes());
+		modelMap.addAttribute("allMeals", kitchenManager.findAllMeals());
 		return "listRecipes";
 	}
 
