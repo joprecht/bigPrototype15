@@ -25,7 +25,6 @@ import org.tudresden.ecatering.model.stock.Ingredient;
 import org.tudresden.ecatering.model.stock.IngredientRepository;
 import org.tudresden.ecatering.model.stock.StockManager;
 import org.javamoney.moneta.Money;
-import org.salespointframework.catalog.Product;
 import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
 

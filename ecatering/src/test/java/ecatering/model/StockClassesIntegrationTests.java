@@ -58,9 +58,9 @@ public class StockClassesIntegrationTests extends AbstractIntegrationTests {
 		
 		
 		//with ingredients from dataInitializer
-		assertThat(manager.findAllIngredients(), is(iterableWithSize(5)));		
+		assertThat(manager.findAllIngredients(), is(iterableWithSize(3)));		
 		assertThat(manager.findExpiredIngredients(), is(iterableWithSize(0)));
-		assertThat(manager.findIngredientsByName("Tomatensauce"), is(iterableWithSize(2)));
+		assertThat(manager.findIngredientsByName("Tomatensauce"), is(iterableWithSize(1)));
 
 		
 		Ingredient testIngredient = StockManager.createIngredient("Salz", Money.of(0.90, EURO), Quantity.of(0.250, Metric.KILOGRAM));

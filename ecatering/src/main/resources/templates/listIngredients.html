@@ -80,7 +80,7 @@
                     <tbody><tr th:each="ingredient : ${allIngredients} ">
 							<td th:text="${ingredient.product}"></td>
 							<td th:text="${ingredient.quantity}"></td>
-							<td th:text="${#temporals.format(ingredient.expirationDate, 'dd.MM.yyyy')}"></td>
+							<td th:text="${ingredient.expirationDate} ? ${#temporals.format(ingredient.expirationDate, 'dd.MM.yyyy')}"></td>
 							<td th:text="${ingredient.product.price}"></td>
 					</tr></tbody>
             </table>		
