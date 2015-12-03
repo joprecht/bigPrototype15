@@ -22,16 +22,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.tudresden.ecatering.model.business.BusinessManager;
+import org.tudresden.ecatering.model.customer.Customer;
+import org.tudresden.ecatering.model.customer.CustomerManager;
+import org.tudresden.ecatering.model.customer.CustomerRepository;
 
 @Controller
 public class MainController {
 	
 	private final UserAccountManager userAccountManager;
+//	private final CustomerManager customerManager;
+//	private final CustomerRepository customerRepository;
+//	private final BusinessManager businessManager;
 	
 	@Autowired
+//	public MainController(UserAccountManager userAccountManager, CustomerRepository customerRepository, BusinessManager businessManager) {
 	public MainController(UserAccountManager userAccountManager) {
 
 		this.userAccountManager = userAccountManager;
+//		this.businessManager = businessManager;
+//		this.customerRepository = customerRepository;
+//		this.customerManager = new CustomerManager(customerRepository, userAccountManager, businessManager);
 	}
 
 	@RequestMapping({ "/", "/index" })
@@ -50,11 +61,15 @@ public class MainController {
 	}
 	
 	@RequestMapping("/registerUser")
-	public String registerUser(@RequestParam("username") String username, @RequestParam("password") String password){
+	public String registerUser(@RequestParam("username") String username, @RequestParam("password") String password,@RequestParam("referal") String referal){
 		
-		UserAccount user = userAccountManager.create(username, password, new Role("ROLE_KITCHEN"));
+		UserAccount user = userAccountManager.create(username, password, new Role("ROLE_CUSTOMER"));
 		
 		userAccountManager.save(user);
+		
+//		Customer cust = CustomerManager.createCustomer(user, referal);
+//		
+//		customerManager.saveCustomer(cust);
 		
 		
 		return "index";
