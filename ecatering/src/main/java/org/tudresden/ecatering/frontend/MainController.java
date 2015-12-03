@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.tudresden.ecatering.model.business.BusinessManager;
+import org.tudresden.ecatering.model.business.BusinessRepository;
 import org.tudresden.ecatering.model.customer.Customer;
 import org.tudresden.ecatering.model.customer.CustomerManager;
 import org.tudresden.ecatering.model.customer.CustomerRepository;
@@ -31,19 +32,15 @@ import org.tudresden.ecatering.model.customer.CustomerRepository;
 public class MainController {
 	
 	private final UserAccountManager userAccountManager;
-//	private final CustomerManager customerManager;
-//	private final CustomerRepository customerRepository;
-//	private final BusinessManager businessManager;
+	private final CustomerManager customerManager;
+	private final BusinessManager businessManager;
 	
 	@Autowired
-//	public MainController(UserAccountManager userAccountManager, CustomerRepository customerRepository, BusinessManager businessManager) {
-	public MainController(UserAccountManager userAccountManager) {
-
+	  public MainController(UserAccountManager userAccountManager, CustomerRepository customerRepository, BusinessRepository businessRepository) {
 		this.userAccountManager = userAccountManager;
-//		this.businessManager = businessManager;
-//		this.customerRepository = customerRepository;
-//		this.customerManager = new CustomerManager(customerRepository, userAccountManager, businessManager);
-	}
+	    this.businessManager = new BusinessManager(businessRepository);
+	    this.customerManager = new CustomerManager(customerRepository, userAccountManager, businessManager);
+	  }
 
 	@RequestMapping({ "/", "/index" })
 	public String index() {
@@ -67,9 +64,9 @@ public class MainController {
 		
 		userAccountManager.save(user);
 		
-//		Customer cust = CustomerManager.createCustomer(user, referal);
-//		
-//		customerManager.saveCustomer(cust);
+		Customer cust = CustomerManager.createCustomer(user, referal);
+		
+		customerManager.saveCustomer(cust);
 		
 		
 		return "index";
