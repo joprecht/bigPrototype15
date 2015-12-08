@@ -55,7 +55,7 @@ public class CustomerController {
 		if(result.hasErrors()){
 			return "/setExpirationDate"; 
 		}
-		
+		Customer customer  = customerRepository.findOne(Long.parseLong(customerID));
 		//customer.setExpirationDate(expirationDate);
 		return "setExpirationDate";
 	}
