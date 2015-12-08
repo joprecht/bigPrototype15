@@ -49,13 +49,14 @@ public class CustomerController {
 		return "myOrders";
 	}
 	
-	//TODO HTML von nöten
+	//TODO HTML vonnöten
 	@RequestMapping(value = "/setExpirationDate", method = RequestMethod.POST)
 	public String setExpirationDate(@RequestParam(value = "customerID", required = false) String customerID, ModelMap modelMap, BindingResult result){
 		if(result.hasErrors()){
 			return "/setExpirationDate"; 
 		}
 		Customer customer  = customerRepository.findOne(Long.parseLong(customerID));
+		
 		//customer.setExpirationDate(expirationDate);
 		return "setExpirationDate";
 	}

@@ -16,7 +16,9 @@ import org.salespointframework.useraccount.UserAccount;
 
 @Entity
 public class Customer implements Serializable {
-
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 4526608006278837720L;
 	
 	@Id 
