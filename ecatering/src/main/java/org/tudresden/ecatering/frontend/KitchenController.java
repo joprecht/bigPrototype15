@@ -57,6 +57,11 @@ class KitchenController {
 		return "createIngredient";
 	}
 	
+	@RequestMapping("/kitchen")
+	public String kitchen() {
+		return "kitchen";
+	}
+	
 	@RequestMapping(value = "/addIngredient", method = RequestMethod.POST)
 	public String addIngredient(@RequestParam("name") String name, @RequestParam("quantity") double quantity,@RequestParam("price") double price, @RequestParam("metric") String metric,@RequestParam("DD") String dayInput,@RequestParam("MM") String monthInput,@RequestParam("YYYY") String yearInput) {
 		//Actually create the Ingredient

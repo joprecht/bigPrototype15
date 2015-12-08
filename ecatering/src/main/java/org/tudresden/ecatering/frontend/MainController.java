@@ -47,10 +47,7 @@ public class MainController {
 		return "index";
 	}
 	
-	@RequestMapping("/kitchen")
-	public String kitchen() {
-		return "kitchen";
-	}
+
 	
 	@RequestMapping("/register")
 	public String register(){
