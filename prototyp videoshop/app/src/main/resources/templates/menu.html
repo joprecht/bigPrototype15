@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+	<title th:text="#{menu.title}">Tageskarte</title>
+</head>
+<body>
+	<div class="all">
+		<header>
+			<h1 th:text="#{menu.title}">Tageskarte</h1>
+		</header>
+		<nav th:include="navigation :: navigation" ></nav>
+		
+		<div class="content">
+			<table>
+				<caption th:text="#{menu.items}">Aktuelle Speisen</caption>
+				<thead>
+					<tr>
+						<th th:text="#{menu.day}">Tag</th>
+						<th th:text="#{menu.normal}">Normal</th>
+						<th th:text="#{menu.diet}">Diät</th>
+						<th th:text="#{menu.special}">Spezial</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each=" dailyMenu : ${actualMenu.dailyMenus}">
+							<td th:text="${dailyMenu.day}">Tag</td>
+							<td th:text="${dailyMenu.dailyMeals[0].meal.name}">Normal</td>
+							<td th:text="${dailyMenu.dailyMeals[2].meal.name}">Diet</td>
+							<td th:text="${dailyMenu.dailyMeals[1].meal.name}">Special</td>
+						    
+							
+						</tr>																								
+				</tbody>
+			</table>
+			
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+		<title th:text="#{kitchen.title}">Kuechenbereich</title>
+	</head>
+<body>
+	<div class="all">
+		<header>
+			<h1 th:text="#{kitchen.title}">Kuechenbereich</h1>
+		</header>
+		<nav th:include="navigation :: navigation" ></nav>
+		
+		<div class="content">
+			<table>
+				<caption th:text="#{kitchen.recipes}"></caption>
+				<thead>
+					<tr>
+						<th th:text="#{kitchen.recipe.name}">Name</th>
+						<th th:text="#{kitchen.recipe.description}">Beschreibung</th>
+						<th th:text="#{business.recipe.ingredients}">Zutaten</th>
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each="recipe : ${allRecipes} ">
+							<td th:text="${recipe.name}"></td>
+							<td th:text="${recipe.description}"></td>
+							<td>
+								<table style="width:100%; border:none">
+									<tbody>	
+											<tr th:each="ingredient : ${recipe.ingredients} ">
+											<td th:text="${ingredient.grocery.name}"></td>
+											<td th:text="${ingredient.quantity}+' '+${ingredient.grocery.metric}"></td>
+											</tr>
+									</tbody>
+								</table>
+							</td>
+							
+		
+						</tr>
+				</tbody>
+			</table>
+
+			<form method="post" action="addRecipe">
+           <input type="hidden" />
+           <table>
+           <thead>
+					<tr>
+						<th th:text="#{kitchen.recipe.grocery}">Grocery</th>
+						<th th:text="#{kitchen.recipe.quantity}">Menge</th>
+					</tr>
+				</thead>
+				<tbody>	
+											<tr th:each="grocery : ${allGroceries} ">
+											<td th:text="${grocery.name}"></td>
+											<td>
+           									 <input id="name" type="text" name="name" />
+											</td>
+											</tr>
+									</tbody>
+								</table>
+            
+            <label for="Rezeptname">Rezeptname:</label>
+            <input id="name" type="text" name="name" />
+            
+            <label for="Beschreibung">Beschreibung:</label>
+            <input id="description" type="text" name="description" />
+            
+            <label for="Typ">Typ:</label>
+            <select id="type" name="type">
+            <option value="COMPANY">Großunternehmen</option>
+            <option value="CHILDCARE">Kinderbetreuung</option>               							
+            </select> 
+            
+            <input type="submit" />
+        </form>
+			
+		</div>
+		
+		
+	</div>
+</body>
+</html>

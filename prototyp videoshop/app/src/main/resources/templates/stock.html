@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+	<title th:text="#{stock.title}">Bestand</title>
+</head>
+<body>
+	<div class="all">
+		<header>
+			<h1 th:text="#{stock.title}">Bestand</h1>
+		</header>
+		<nav th:include="navigation :: navigation" ></nav>
+		
+		<div class="content">
+			<table>
+				<caption th:text="#{stock.items}">Aktuelle Lebensmittel</caption>
+				<thead>
+					<tr>
+						<th th:text="#{stock.grocery}">Lebensmittel</th>
+						<th th:text="#{stock.count}">Anzahl</th>
+						<th th:text="#{stock.expirationDate}">Ablaufdatum</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each=" item : ${stockItems}">
+							<td th:text="${item.grocery.name}">Grocery</td>
+							<td th:text="${item.quantity}+${item.grocery.metric}">quantity</td>
+							<td th:text="${#temporals.format(item.expirationDate, 'dd.MM.yyyy')}">expirationDate</td>
+						</tr>																								
+				</tbody>
+			</table>
+			<form method="post" action="addStockItem">
+            <input type="hidden" />
+            
+            <label for="Grocery">Grocery:</label>
+            <input id="grocery" type="text" name="grocery" />
+ 
+            <label for="Quantity">Quantity:</label>
+            <input id="quantity" type="text" name="quantity" />
+            
+            <label for="Date">ExpirationDate DD/MM/YYYY:</label>
+            <input id="day" type="text" name="day" />
+            <input id="month" type="text" name="month" />
+            <input id="year" type="text" name="year" />
+            
+            
+            <input type="submit" />
+        </form>
+			<div th:if="${not #lists.isEmpty(expiredStockItems)}">
+			<table>
+				<caption th:text="#{stock.expiredItems}">Abgelaufene Lebensmittel</caption>
+				<thead>
+					<tr>
+						<th th:text="#{stock.grocery}">Lebensmittel</th>
+						<th th:text="#{stock.count}">Anzahl</th>
+						<th th:text="#{stock.expirationDate}">Ablaufdatum</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each=" item : ${expiredStockItems}">
+							<td th:text="${item.grocery.name}">Lebensmittel</td>
+							<td th:text="${item.quantity}+${item.grocery.metric}">Menge</td>
+							<td th:text="${#temporals.format(item.expirationDate, 'dd.MM.yyyy')}">Ablaufdatum</td>
+						</tr>																								
+				</tbody>
+			</table>
+			<form method="get" action="removeExpiredStockItems">
+							<input type="submit" th:value="#{stock.deleteItems}" value="delete" />
+							</form>
+			</div>
+			<table>
+				<caption th:text="#{stock.groceries}">Bestellbare Lebensmittel</caption>
+				<thead>
+					<tr>
+						<th th:text="#{stock.grocery}">Lebensmittel</th>
+						<th th:text="#{stock.metric}">Einheit</th>
+						<th th:text="#{stock.price}">Preis</th>
+						<th th:text="#{stock.newPrice}">neuer Preis</th>
+						
+						
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each=" grocery : ${groceries}">
+							<td th:text="${grocery.name}">Lebensmittel</td>
+							<td th:text="${grocery.metric}">Einheit</td>
+							<td th:text="${grocery.price}">Preis</td>
+							<td> 
+							<form method="post" action="setGroceryPrice">
+           					 <input type="hidden" th:value="${grocery.name}" name="grocery" />
+           					 <label for="Price">Price:</label>
+           					 <input id="price" type="text" name="price" />
+           					 <input type="submit" />
+       						 </form></td>
+							
+						</tr>																								
+				</tbody>
+			</table>
+			<form method="post" action="addGrocery">
+            <input type="hidden" />
+            
+            <label for="Grocery">Grocery:</label>
+            <input id="grocery" type="text" name="grocery" />
+            
+            <label for="Metric">Metric:</label>
+            <select id="metric" name="metric">
+                <option value="KILOGRAM">KILOGRAM</option>
+                <option value="LITER">LITER</option>
+                <option value="UNIT">UNIT</option>
+            </select>
+            
+            <label for="Price">Price:</label>
+            <input id="price" type="text" name="price" />
+
+            <input type="submit" />
+        </form>
+			<table>
+				<caption th:text="#{stock.stockReport}+' for '+${#temporals.format(stockReport.reportDate, 'dd.MM.yyyy')}">StockReport</caption>
+				<thead>
+					<tr>
+						<th th:text="#{stock.grocery}">Lebensmittel</th>
+						<th th:text="#{stock.count}">Anzahl</th>		
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each=" ingredient : ${stockReport.ingredients}">
+							<td th:text="${ingredient.grocery.name}">Lebensmittel</td>
+							<td th:text="${ingredient.quantity}+${ingredient.grocery.metric}">Menge</td>
+						</tr>																								
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

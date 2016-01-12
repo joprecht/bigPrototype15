@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+		<title th:text="#{business.title}">Institutionen</title>
+	</head>
+<body>
+	<div class="all">
+		<header>
+			<h1 th:text="#{business.title}">Institutionen</h1>
+		</header>
+		<nav th:include="navigation :: navigation" ></nav>
+		
+		<div class="content">
+			<table>
+				<caption th:text="#{business.title}"></caption>
+				<thead>
+					<tr>
+						<th th:text="#{business.name}">Name</th>
+						<th th:text="#{business.type}">Art</th>
+						<th th:text="#{business.address}">Lieferadresse</th>
+						<th th:text="#{business.codes}">Codes</th>							
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each="business : ${allBusinesses} ">
+							<td th:text="${business.name}"></td>
+							<td th:text="${business.businessType}"></td>
+							<td>
+								<table style="width:100%; border:none">
+									<tbody>	
+										<tr><td th:text="'Vorname: '+${business.deliveryAddress.firstname}"></td></tr>
+										<tr><td th:text="'Nachname: '+${business.deliveryAddress.lastname}"></td></tr>
+										<tr><td th:text="'Strasse: '+${business.deliveryAddress.street}+' '+${business.deliveryAddress.streetNumber}"></td></tr>
+										<tr><td th:text="'PLZ: '+${business.deliveryAddress.postalCode}"></td></tr>
+										<tr><td th:text="'Stadt: '+${business.deliveryAddress.city}"></td></tr>
+										<tr><td th:text="'Land: '+${business.deliveryAddress.country}"></td></tr>
+										
+									</tbody>
+								</table>
+							</td>
+							<td>
+								<table style="width:100%; border:none">
+									<tbody>	
+										<span th:if="${business.institutionCode}!=null"> 
+										<tr><td th:text="'master: '+${business.institutionCode}">InstitutionCode</td></tr>
+										</span>
+            						    <tr><td th:text="'member: '+${business.memberCode}">MemberCode</td></tr>
+									</tbody>
+								</table>
+							</td>
+		
+						</tr>
+				</tbody>
+			</table>
+
+			<form method="post" action="addBusiness">
+           <input type="hidden" />
+            
+            <label for="Firmenname">Firmenname:</label>
+            <input id="name" type="text" name="name" />
+ 
+ 			<label for="Typ">Typ:</label>
+            <select id="type" name="type">
+            <option value="COMPANY">Großunternehmen</option>
+            <option value="CHILDCARE">Kinderbetreuung</option>               							
+            </select>
+            
+            <label for="Vorname">Vorname:</label>
+            <input id="firstname" type="text" name="firstname" />
+            
+            <label for="Nachname">Nachname:</label>
+            <input id="lastname" type="text" name="lastname" />
+            
+            <label for="Strasse">Strasse:</label>
+            <input id="street" type="text" name="street" />
+            
+            <label for="Nummer">Nummer:</label>
+            <input id="streetnumber" type="text" name="streetnumber" />
+            
+            <label for="Postleitzahl">Postleitzahl:</label>
+            <input id="zip" type="text" name="zip" />
+            
+            <label for="Stadt">Stadt:</label>
+            <input id="city" type="text" name="city" />
+            
+            <label for="Land">Land:</label>
+            <input id="country" type="text" name="country" />
+                
+            <label for="MemberCode">MemberCode:</label>
+            <input id="membercode" type="text" name="membercode" />
+            
+            <label for="MemberCode">InstitutionCode bei Childcare:</label>
+            <input id="institutioncode" type="text" name="institutioncode" />    
+            
+            <input type="submit" />
+        </form>
+		</div>
+		
+		
+	</div>
+</body>
+</html>

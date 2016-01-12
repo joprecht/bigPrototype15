@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+		<title th:text="#{register.title}">Registrierung</title>
+	</head>
+<body>
+	<div class="all">
+		<header>
+			<h1 th:text="#{register.title}">Registrierung</h1>
+		</header>
+		<nav th:include="navigation :: navigation"></nav>
+
+		<div class="content">
+			<div sec:authorize="hasRole('ROLE_ADMIN')" class="salespoint">
+
+				<form method="post" action="/registerNewEmployee" th:object="${registrationForm}">
+					
+
+					<fieldset>
+						<legend th:text="#{register.title1}">Mitarbeiterregistration</legend>
+						
+						<div th:if="${#fields.hasErrors('*')}">
+							<p>Einige Angaben sind nicht korrekt.</p>
+						</div>
+						
+						<label th:text="#{register.nickname}" for="nickname">Nickname</label>
+						<input id="nickname" th:field="*{nickname}" th:errorclass="fieldError" type="text" name="nickname" />
+						<p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Der Nickname darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{register.firstname}" for="firstname">Firstname</label>
+						<input id="firstname" th:field="*{firstname}" th:errorclass="fieldError" type="text" name="firstname" /><br /> 
+						<p th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">Der Vorname darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{register.lastname}" for="lastname">Lastname</label>
+						<input id="lastname" th:field="*{lastname}" th:errorclass="fieldError" type="text" name="lastname" /><br /> 
+						<p th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Der Nachname darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{register.email}" for="email">Email</label>
+						<input id="email" th:field="*{email}" th:errorclass="fieldError" type="text" name="email" />
+						<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Die Email darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{register.password}" for="password">Passwort</label>
+						<input id="password" th:field="*{password}" th:errorclass="fieldError" type="text" name="password" /><br /> 
+						<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Das Passwort darf nicht leer sein.</p>
+						
+					
+						<label th:text="#{register.role}" for="Role"> Role:</label>
+            			<select id="role" name="role">
+                	    <option value="ROLE_ADMIN">Admin</option>
+                		<option value="ROLE_ACCOUNTING">Accounting</option>
+                		<option value="ROLE_KITCHEN">Kitchen</option>
+                		<option value="ROLE_STOCK">Stock</option>               							
+            			</select>
+					
+					
+						<br />
+						<input type="submit" th:value="#{register.submit}" value="Registrieren" />
+					</fieldset>
+				</form>
+			</div>
+			<div sec:authorize="!hasAnyRole('ROLE_ADMIN','ROLE_CUSTOMER','ROLE_ACCOUNTING','ROLE_KITCHEN','ROLE_STOCK')" class="salespoint">
+
+				<form method="post" action="/registerNewCustomer" th:object="${registrationForm}">
+					
+
+					<fieldset>
+						<legend th:text="#{register.title2}">Kundenregistration</legend>
+						
+						<div th:if="${#fields.hasErrors('*')}">
+							<p>Einige Angaben sind nicht korrekt.</p>
+						</div>
+						
+						<label th:text="#{register.nickname}" for="nickname">Nickname</label>
+						<input id="nickname" th:field="*{nickname}" th:errorclass="fieldError" type="text" name="nickname" />
+						<p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Der Nickname darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{register.firstname}" for="firstname">Firstname</label>
+						<input id="firstname" th:field="*{firstname}" th:errorclass="fieldError" type="text" name="firstname" /><br /> 
+						<p th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">Der Vorname darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{register.lastname}" for="lastname">Lastname</label>
+						<input id="lastname" th:field="*{lastname}" th:errorclass="fieldError" type="text" name="lastname" /><br /> 
+						<p th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Der Nachname darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{register.email}" for="email">Email</label>
+						<input id="email" th:field="*{email}" th:errorclass="fieldError" type="text" name="email" />
+						<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Die Email darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{register.password}" for="password">Passwort</label>
+						<input id="password" th:field="*{password}" th:errorclass="fieldError" type="text" name="password" /><br /> 
+						<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Das Passwort darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{register.code}" for="code">Code</label>
+						<input id="code" th:field="*{code}" th:errorclass="fieldError" type="text" name="code" /><br /> 
+						<p th:if="${#fields.hasErrors('code')}" th:errors="*{code}">Der ReferralCode darf nicht leer sein.</p>
+					
+						<br />
+						<input type="submit" th:value="#{register.submit}" value="Registrieren" />
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

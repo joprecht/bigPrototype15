@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+		<title th:text="#{orders.title}">Bestellungen</title>
+	</head>
+<body>
+	<div class="all">
+		<header>
+			<h1 th:text="#{users.title}">Benutzer</h1>
+		</header>
+		<nav th:include="navigation :: navigation" ></nav>
+		
+		<div class="content">
+			<table>
+				<caption th:text="#{users.employees}"></caption>
+				<thead>
+					<tr>
+						<th th:text="#{users.nickname}">Nickname</th>
+						<th th:text="#{users.firstname}">Vorname</th>
+						<th th:text="#{users.lastname}">Nachname</th>
+						<th th:text="#{users.email}">Email</th>
+						<th th:text="#{users.roles}">Rollen</th>
+						<th th:text="#{users.enabled}">Enabled</th>	
+							
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each="user : ${allEmployees} ">
+							<td th:text="${user.username}"></td>
+							<td th:text="${user.firstname}"></td>
+							<td th:text="${user.lastname}"></td>
+							<td th:text="${user.email}"></td>
+							<td>
+								<table style="width:100%; border:none">
+									<tbody>
+            						    <tr>
+            						    	<form method="post" action="addRole">
+           									<input type="hidden" th:value="${user.username}" name="username" />
+            
+            								<label for="Role">new/delete Role:</label>
+            								<select id="role" name="role">
+                							<option value="ROLE_ADMIN">Admin</option>
+                							<option value="ROLE_ACCOUNTING">Accounting</option>
+                							<option value="ROLE_KITCHEN">Kitchen</option>
+                							<option value="ROLE_STOCK">Stock</option>               							
+            								</select>
+            								<input type="submit" />
+        									</form>
+        								</tr>									
+										<tr th:each="role : ${user.roles}">
+										<td th:text="${role.name}"></td>
+            						    </tr>
+									</tbody>
+								</table>
+							</td>
+							<td>
+							<span th:if="${user.enabled}" th:text="#{users.enabled}">Enabled</span>
+							<span th:if="${!user.enabled}" th:text="#{users.disabled}">Disabled</span>
+							<form method="get" action="toggleUser">
+							 <input type="hidden" th:value="${user.username}" name="username"/>
+							<input type="submit" th:value="#{users.toggleUser}" value="toggleUser" />
+							</form>
+							</td>
+						</tr>
+				</tbody>
+			</table>
+			<table>
+				<caption th:text="#{users.customers}"></caption>
+				<thead>
+					<tr>
+						<th th:text="#{users.nickname}">Nickname</th>
+						<th th:text="#{users.firstname}">Vorname</th>
+						<th th:text="#{users.lastname}">Nachname</th>
+						<th th:text="#{users.email}">Email</th>
+						<th th:text="#{users.company}">Firma</th>
+						<th th:text="#{users.discount}">Rabatt</th>
+						<th th:text="#{users.enabled}">Enabled</th>	
+							
+					</tr>
+				</thead>
+				<tbody>
+						<tr th:each="user : ${allCustomers} ">
+							<td th:text="${user.userAccount.username}"></td>
+							<td th:text="${user.userAccount.firstname}"></td>
+							<td th:text="${user.userAccount.lastname}"></td>
+							<td th:text="${user.userAccount.email}"></td>
+							<td th:text="${user.business.name}+' '+${user.business.businessType}"></td>
+							<td th:text="${user.discount}"></td>							
+							<td>
+							<span th:if="${user.userAccount.enabled}" th:text="#{users.enabled}">Enabled</span>
+							<span th:if="${!user.userAccount.enabled}" th:text="#{users.disabled}">Disabled</span>
+							<form method="get" action="toggleUser">
+							 <input type="hidden" th:value="${user.userAccount.username}" name="username"/>
+							<input type="submit" th:value="#{users.toggleUser}" value="toggleUser" />
+							</form>
+							</td>
+						</tr>
+				</tbody>
+			</table>
+			
+
+
+		
+			
+		</div>
+		
+		
+	</div>
+</body>
+</html>
