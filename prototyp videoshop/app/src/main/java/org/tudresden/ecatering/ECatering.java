@@ -45,7 +45,7 @@ public class ECatering {
 		 */
 		@Override
 		public void addViewControllers(ViewControllerRegistry registry) {
-			registry.addViewController(LOGIN_ROUTE).setViewName("login");
+			registry.addViewController(LOGIN_ROUTE).setViewName("login2");
 			registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		}
 	}
