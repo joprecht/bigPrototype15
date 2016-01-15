@@ -4,6 +4,18 @@
   </head>
   <body>
     <div tiles:fragment="content">
+    <nav th:include="navigation :: navigation">
+			<ul>
+				<li><a href="register.html">Registrierung</a></li>
+				<li><a href="orders.html">Bestellungen</a></li>
+				<li><a href="stock.html">Lager</a></li>
+				<li><a href="catalog.html">Dvd Katalog</a></li>
+				<li><a href="catalog.html">Blu-ray Katalog</a></li>
+				<li><a href="basket.html">Warenkorb</a></li>
+				<li class="loginlogout"><a href="@{/login}">Login</a></li>
+				<li class="loginlogout"><a href="@{/logout}">Logout</a></li>
+			</ul>
+		</nav>
         <form name="f" th:action="@{/login}" method="post">               
             <fieldset>
                 <legend>Please Login</legend>
