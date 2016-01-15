@@ -56,7 +56,7 @@
 											<tr th:each="grocery : ${allGroceries} ">
 											<td th:text="${grocery.name}"></td>
 											<td>
-           									 <input id="name" type="text" name="name" />
+           									 <input id="quan" type="text" name="quan" th:text="${grocery.metric}"  />
 											</td>
 											</tr>
 									</tbody>
@@ -66,13 +66,7 @@
             <input id="name" type="text" name="name" />
             
             <label for="Beschreibung">Beschreibung:</label>
-            <input id="description" type="text" name="description" />
-            
-            <label for="Typ">Typ:</label>
-            <select id="type" name="type">
-            <option value="COMPANY">Großunternehmen</option>
-            <option value="CHILDCARE">Kinderbetreuung</option>               							
-            </select> 
+            <textarea id="description" name="description" cols="25" rows="10" maxlength="250"></textarea>            							
             
             <input type="submit" />
         </form>

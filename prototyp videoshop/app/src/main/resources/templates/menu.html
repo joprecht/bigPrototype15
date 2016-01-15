@@ -14,29 +14,51 @@
 		<nav th:include="navigation :: navigation" ></nav>
 		
 		<div class="content">
+			<div th:if="${actualMenu != null}">
+			<form method="post" action="addMealsToBasket">
 			<table>
-				<caption th:text="#{menu.items}">Aktuelle Speisen</caption>
+				<caption th:text="#{menu.menuFor}+${actualMenu.calendarWeek}+#{menu.calendarWeek}">Aktuelle Speisen</caption>
 				<thead>
 					<tr>
 						<th th:text="#{menu.day}">Tag</th>
 						<th th:text="#{menu.normal}">Normal</th>
-						<th th:text="#{menu.diet}">Diät</th>
 						<th th:text="#{menu.special}">Spezial</th>
+						<th th:text="#{menu.diet}">Diät</th>
 						
 					</tr>
 				</thead>
 				<tbody>
 						<tr th:each=" dailyMenu : ${actualMenu.dailyMenus}">
 							<td th:text="${dailyMenu.day}">Tag</td>
-							<td th:text="${dailyMenu.dailyMeals[0].meal.name}">Normal</td>
-							<td th:text="${dailyMenu.dailyMeals[2].meal.name}">Diet</td>
-							<td th:text="${dailyMenu.dailyMeals[1].meal.name}">Special</td>
+							<td> 
+							<p th:text="${dailyMenu.dailyMeals[0].meal.name}">Mahlzeit</p>
+							<p th:text="${dailyMenu.dailyMeals[0].price}">Preis</p>
+							<p th:text="#{menu.quantity}">Anzahl:</p>
+							<p><input type="text" id="quantity" name="quantity"  /></p>
+							<input type="hidden" th:value="${dailyMenu.dailyMeals[0].identifier}" name="pid"/>
+							</td>
+							<td> 
+							<p th:text="${dailyMenu.dailyMeals[1].meal.name}">Mahlzeit</p>
+							<p th:text="${dailyMenu.dailyMeals[1].price}">Preis</p>
+							<p th:text="#{menu.quantity}">Anzahl:</p>
+							<p><input type="text" id="quantity" name="quantity"  /></p>
+							<input type="hidden" th:value="${dailyMenu.dailyMeals[1].identifier}" name="pid"/>							
+							</td>
+							<td>
+							<p th:text="${dailyMenu.dailyMeals[2].meal.name}">Mahlzeit</p>
+							<p th:text="${dailyMenu.dailyMeals[2].price}">Preis</p>							
+							<p th:text="#{menu.quantity}">Anzahl:</p>
+							<p><input type="text" id="quantity" name="quantity"  /></p>
+							<input type="hidden" th:value="${dailyMenu.dailyMeals[2].identifier}" name="pid"/>							
+							</td>
 						    
 							
 						</tr>																								
 				</tbody>
 			</table>
-			
+			<input type="submit" />
+			</form>
+			</div>
 		</div>
 	</div>
 </body>

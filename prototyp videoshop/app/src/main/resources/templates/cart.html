@@ -19,53 +19,34 @@
 					<caption th:text="#{cart.title}">Warenkorb</caption>
 					<thead>
 						<tr>
-							<th th:text="#{cart.movieTitle}">Titel</th>
-							<th th:text="#{cart.count}">Anzahl</th>
+							<th th:text="#{cart.day}">Tag</th>
+							<th th:text="#{cart.meals}">Speisen</th>
 							<th th:text="#{cart.price}">Preis</th>
-							<th th:text="#{cart.customize}">customize</th>
+							<th th:text="#{cart.deleteItem}">Löschen</th>
 						</tr>
 					</thead>
 					<tbody th:remove="all-but-first">
 
 						<tr th:each="item : ${cart} ">
-							<td th:text="${item.productName}">Last Action Hero</td>
-							<td th:text="${item.quantity}">10</td>
-							<td th:text="${item.price}">10 Euro</td>
+							<td th:text="${item.product.day}">Tag</td>
+							<td th:text="${item.quantity}+' * '+${item.productName}">Mahlzeit</td>
+							<td th:text="${item.price}">Preis</td>
 							<td>
-							 <form method="get" action="incItem">
-							 <input type="hidden" th:value="${item.identifier}" name="pid"/>
-							<input type="submit" th:value="#{cart.incItem}" value="inc" />
-							</form>
-							<form method="get" action="decItem">
+							<form method="get" action="deleteItem">
 							<input type="hidden" th:value="${item.identifier}" name="pid"/>
-							<input type="submit" th:value="#{cart.decItem}" value="dec" />
+							<input type="submit" th:value="#{cart.deleteItem}" value="dec" />
 							</form>
 							 </td>
-						</tr>
-						<tr>
-							<td>Last Action Hero</td>
-							<td>10</td>
-							<td>10 Euro</td>
-						</tr>
-						<tr>
-							<td>Last Action Hero</td>
-							<td>10</td>
-							<td>10 Euro</td>
-						</tr>
-						<tr>
-							<td>Last Action Hero</td>
-							<td>10</td>
-							<td>10 Euro</td>
 						</tr>
 
 					</tbody>
 				</table>
-				<p th:text="#{cart.total} + ': ' + ${cart.price}">Summe: 100 Euro</p>
+				<p th:text="#{cart.total} + ': ' + ${cart.price}">Preis</p>
 				<div class="salespoint" sec:authorize="hasRole('ROLE_CUSTOMER')">
-					<form method="post" action="checkout">
+					<form method="get" action="checkout">
 						<input type="submit" th:value="#{cart.buy}" value="Kaufen" />
 					</form>
-					<form method="get" action="deleteItem">
+					<form method="get" action="emptyCart">
 						<input type="submit" th:value="#{cart.delete}" value="Delete" />
 					</form>
 				</div>

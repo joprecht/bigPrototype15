@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+		<title th:text="#{checkout.title}">Checkout</title>
+	</head>
+<body>
+	<div class="all">
+		<header>
+			<h1 th:text="#{checkout.title}">Checkout</h1>
+		</header>
+		<nav th:include="navigation :: navigation"></nav>
+
+		<div class="content">
+				<table>
+					<caption th:text="#{checkout.title}">Rechnung</caption>
+					<thead>
+						<tr>
+							<th th:text="#{cart.day}">Tag</th>
+							<th th:text="#{cart.meals}">Speisen</th>
+							<th th:text="#{cart.price}">Preis</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr th:each="item : ${cart} ">
+							<td th:text="${item.product.day}">Tag</td>
+							<td th:text="${item.quantity}+' * '+${item.productName}">Mahlzeit</td>
+							<td th:text="${item.price}">Preis</td>
+						</tr>
+					</tbody>
+				</table>
+				<p th:text="#{cart.total} + ': ' + ${cart.price}">Preis</p>
+				<div th:if="${discount!=null}">
+				<p th:text="'-'+${discount}+'% Rabatt'">Rabatt</p>
+				<p th:text="'Ihr Preis: '+${discountPrice}">Endpreis</p>
+				</div>
+				<br />
+				<br />
+				<p th:text="#{checkout.address}">Rechnungsadresse:</p>
+				<form method="post" action="/checkoutForm" th:object="${checkoutForm}">
+					
+
+					<fieldset>
+						<legend th:text="#{checkout.address}">Rechnungsadresse:</legend>
+						
+						<div th:if="${#fields.hasErrors('*')}">
+							<p>Einige Angaben sind nicht korrekt.</p>
+						</div>
+						
+						
+						<label th:text="#{checkout.firstname}" for="firstname">Firstname</label>
+						<input id="firstname" th:field="*{firstname}" th:errorclass="fieldError" type="text" name="firstname" /><br /> 
+						<p th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">Der Vorname darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{checkout.lastname}" for="lastname">Lastname</label>
+						<input id="lastname" th:field="*{lastname}" th:errorclass="fieldError" type="text" name="lastname" /><br /> 
+						<p th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Der Nachname darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{checkout.street}" for="street">Street</label>
+						<input id="street" th:field="*{street}" th:errorclass="fieldError" type="text" name="street" /><br /> 
+						<p th:if="${#fields.hasErrors('street')}" th:errors="*{street}">Der Strassenname darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{checkout.streetNumber}" for="streetNumber">Streetnumber</label>
+						<input id="streetNumber" th:field="*{streetNumber}" th:errorclass="fieldError" type="text" name="streetNumber" /><br /> 
+						<p th:if="${#fields.hasErrors('streetNumber')}" th:errors="*{streetNumber}">Die Strassennummer darf nicht leer sein.</p>
+					
+					
+						<br />
+						<label th:text="#{checkout.zip}" for="zip">PostalCode</label>
+						<input id="zip" th:field="*{zip}" th:errorclass="fieldError" type="text" name="zip" /><br /> 
+						<p th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}">Die Postleitzahl darf nicht leer sein.</p>
+						
+					    <br />
+						<label th:text="#{checkout.city}" for="city">City</label>
+						<input id="city" th:field="*{city}" th:errorclass="fieldError" type="text" name="city" /><br /> 
+						<p th:if="${#fields.hasErrors('city')}" th:errors="*{city}">Die Stadt darf nicht leer sein.</p>
+						
+						<br />
+						<label th:text="#{checkout.country}" for="country">Country</label>
+						<input id="country" th:field="*{country}" th:errorclass="fieldError" type="text" name="country" /><br /> 
+						<p th:if="${#fields.hasErrors('country')}" th:errors="*{country}">Das Land darf nicht leer sein.</p>
+					
+						<br />
+						<input type="submit" th:value="#{checkout.submit}" value="Bezahlen" />
+					</fieldset>
+				</form>
+		</div>
+	</div>
+</body>
+</html>

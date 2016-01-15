@@ -1,28 +1,40 @@
 package org.tudresden.ecatering.frontend;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
 
+import javax.validation.Valid;
 
+import org.javamoney.moneta.Money;
+import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderManager;
+import org.salespointframework.quantity.Metric;
 import org.salespointframework.quantity.Quantity;
+import static org.salespointframework.core.Currencies.EURO;
+
+import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.tudresden.ecatering.model.CheckoutForm;
+import org.tudresden.ecatering.model.CustomerRegistrationForm;
 import org.tudresden.ecatering.model.accountancy.Address;
 import org.tudresden.ecatering.model.accountancy.Debit;
+import org.tudresden.ecatering.model.accountancy.Discount;
 import org.tudresden.ecatering.model.accountancy.MealOrder;
 import org.tudresden.ecatering.model.accountancy.Transfer;
 import org.tudresden.ecatering.model.business.Business;
@@ -33,6 +45,7 @@ import org.tudresden.ecatering.model.kitchen.Helping;
 import org.tudresden.ecatering.model.kitchen.KitchenManager;
 import org.tudresden.ecatering.model.kitchen.Menu;
 import org.tudresden.ecatering.model.kitchen.MenuItem;
+import org.tudresden.ecatering.model.kitchen.MenuItemRepository;
 
 @Controller
 @PreAuthorize("hasRole('ROLE_CUSTOMER')")
@@ -58,57 +71,96 @@ class CartController {
 	}
 
 	
-	@RequestMapping(value = "/cart", method = RequestMethod.POST)
-	public String addMeals(@RequestParam("meal") ArrayList<MenuItem> menuitem, @RequestParam("number") ArrayList<Integer> number, @ModelAttribute Cart cart) {
+	@RequestMapping(value = "/addMealsToBasket", method = RequestMethod.POST)
+	public String addMealToBasket(@RequestParam("quantity") ArrayList<String> quantities,
+								@RequestParam("pid") ArrayList<MenuItem> menus,
+								@ModelAttribute Cart cart) {
 		
-		//Add menuItem to cart
-		for(int i=0; i < menuitem.size(); i++){
 		
-		cart.addOrUpdateItem(menuitem.get(i), Quantity.of(number.get(i)));
+		try{
+		for(int i=0;i<quantities.size();i++)
+		{
+			if(quantities.get(i)!=null && !quantities.get(i).trim().isEmpty())
+			{
+				System.out.println("add to cart");
+				cart.addOrUpdateItem(menus.get(i), Quantity.of(Integer.valueOf(quantities.get(i))));
+			}
+				
 		}
-		return "";
+		}catch(Exception e){
+		System.out.println(e+"\n");
+		}
+		
+		return "redirect:/menu";
+	}
+	
+	@RequestMapping(value = "/deleteItem", method = RequestMethod.GET)
+	public String deleteItem(@ModelAttribute Cart cart, @RequestParam("pid") String identifier) {
+		
+		cart.removeItem(identifier);
+		
+		return "redirect:/cart";
+	}
+	
+	@RequestMapping(value = "/emptyCart", method = RequestMethod.GET)
+	public String emptyCart(@ModelAttribute Cart cart) {
+		
+		cart.clear();
+
+		return "redirect:/cart";
 	}
 
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
 	public String cart() {
+		
 		return "cart";
 	}
 
 
-	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
-	public String checkout(@ModelAttribute Cart cart, 
-						   @LoggedIn Optional<UserAccount> userAccount,
-						   @RequestParam("streetname") String street,
-						   @RequestParam("streenumber") String number,
-						   @RequestParam("zip") String zip,
-						   @RequestParam("city") String city,
-						   @RequestParam("country") String country,
-						   @RequestParam("payment") String payment,
-						   @RequestParam(value = "iban", required = false) String iban,
-						   @RequestParam(value = "ibic", required = false) String bic) {
-
-		UserAccount user = userAccount.get();
-		Customer cust = customerManager.findCustomerByUserAccount(user).get();
-		Address invoiceAddress = new Address(user.getFirstname(),user.getLastname(),street,number,zip,city,country);
+	@RequestMapping("/checkout")
+	public String checkout(@ModelAttribute Cart cart, ModelMap modelMap, @LoggedIn Optional<UserAccount> userAccount) {
 		
-		return userAccount.map(account -> {
-			MealOrder order = null;
+		Money discountPrice = null;
+		System.out.println("checkout\n");
+		
+		try{
+			Discount discount = customerManager.findCustomerByUserAccount(userAccount.get()).get().getDiscount();
+			if(discount.equals(Discount.CHILDCARE))
+			{
+				System.out.println("childcare user\n");
+				double tempValue = cart.getPrice().getNumberStripped().multiply(BigDecimal.valueOf(discount.getDiscountFactor())).doubleValue();
+				discountPrice = Money.of(BigDecimal.valueOf(tempValue).setScale(2, BigDecimal.ROUND_HALF_DOWN),EURO);
 			
-			if(payment.equals("TRANSFER")){
-				order = new MealOrder(cust, Transfer.TRANSFER,invoiceAddress);	
-			}else{
-				order = new MealOrder(cust,new Debit(user.getFirstname()+" "+user.getLastname(),iban,bic),invoiceAddress);	
 			}
-			
-
-			cart.addItemsTo(order);
-			mealOrderManager.save(order);
-
-			cart.clear();
-
-			return "redirect:/";
-		}).orElse("redirect:/cart");
+		}catch(Exception e) {
+			System.out.println(e+"\n");
+		}
+		
+		modelMap.addAttribute("discountPrice", discountPrice);
+		modelMap.addAttribute("discount", 100-(Discount.CHILDCARE.getDiscountFactor()*100));
+		modelMap.addAttribute("checkoutForm", new CheckoutForm());
+				
+		return "checkout";
 	}
+	
+	@RequestMapping("/checkoutForm")
+	public String checkoutForm(@ModelAttribute("checkoutForm") @Valid CheckoutForm checkoutForm,
+			BindingResult result) {
+
+		//TODO: error page for wrong code and nickname
+		if (result.hasErrors())  {
+			System.out.println("error\n");
+			return "/checkout";
+		}
+
+		// (｡◕‿◕｡)
+		
+
+
+		return "redirect:/";
+	}
+
+
 	
 	//TODO HTML for showing the Menus of the following 3 weeks
 	@RequestMapping("/showPlan")

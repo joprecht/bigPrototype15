@@ -91,7 +91,7 @@ private void initializeUsers() {
 			return;
 		}
 
-		UserAccount ua0 = userAccountManager.create("boss", "123", Role.of("ROLE_ADMIN"));
+		UserAccount ua0 = userAccountManager.create("boss", "123", Role.of("ROLE_ADMIN"),Role.of("ROLE_ACCOUNTING"));
 		userAccountManager.save(ua0);
 		UserAccount ua1 = userAccountManager.create("koch", "123", Role.of("ROLE_KITCHEN"));
 		userAccountManager.save(ua1);
@@ -144,6 +144,13 @@ private void initializeKitchen() {
 		ingredients.add(kitchenManager.createIngredient(stockManager.findGroceryByName("Kartoffeln").get(), 0.300));
 
 		kitchenManager.saveRecipe(kitchenManager.createRecipe("Kartoffeln ohne allem", "Kartoffeln auf den Teller legen...", ingredients));
+		
+		//freies Rezept ohne Mahlzeit
+		ingredients = new ArrayList<Ingredient>();
+		ingredients.add(kitchenManager.createIngredient(stockManager.findGroceryByName("Kartoffeln").get(), 0.300));
+		ingredients.add(kitchenManager.createIngredient(stockManager.findGroceryByName("Schweinefleisch").get(), 0.200));
+
+		kitchenManager.saveRecipe(kitchenManager.createRecipe("Kartoffeln mit Schweinefleisch", "Zubereitung...", ingredients));
 		
 		
 		//meals für rezepte
@@ -229,6 +236,44 @@ private void initializeKitchen() {
 		dailyMenus.add(kitchenManager.createDailyMenu(fridayMeals));
 
 		kitchenManager.saveMenu(kitchenManager.createMenu(4, dailyMenus));
+		
+		
+		
+		//weiterer plan für kinder
+		
+		mondayMeals = new ArrayList<MenuItem>();
+		mondayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.REGULAR).iterator().next(),Helping.SMALL,Day.MONDAY));
+		mondayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.SPECIAL).iterator().next(),Helping.SMALL,Day.MONDAY));
+		mondayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.DIET).iterator().next(),Helping.SMALL,Day.MONDAY));
+
+		tuesdayMeals = new ArrayList<MenuItem>();
+		tuesdayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.REGULAR).iterator().next(),Helping.SMALL,Day.TUESDAY));
+		tuesdayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.SPECIAL).iterator().next(),Helping.SMALL,Day.TUESDAY));
+		tuesdayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.DIET).iterator().next(),Helping.SMALL,Day.TUESDAY));
+		
+		wednesdayMeals = new ArrayList<MenuItem>();
+		wednesdayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.REGULAR).iterator().next(),Helping.SMALL,Day.WEDNESDAY));
+		wednesdayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.SPECIAL).iterator().next(),Helping.SMALL,Day.WEDNESDAY));
+		wednesdayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.DIET).iterator().next(),Helping.SMALL,Day.WEDNESDAY));
+
+		thursdayMeals = new ArrayList<MenuItem>();
+		thursdayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.REGULAR).iterator().next(),Helping.SMALL,Day.THURSDAY));
+		thursdayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.SPECIAL).iterator().next(),Helping.SMALL,Day.THURSDAY));
+		thursdayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.DIET).iterator().next(),Helping.SMALL,Day.THURSDAY));
+		
+		fridayMeals = new ArrayList<MenuItem>();
+		fridayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.REGULAR).iterator().next(),Helping.SMALL,Day.FRIDAY));
+		fridayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.SPECIAL).iterator().next(),Helping.SMALL,Day.FRIDAY));
+		fridayMeals.add(kitchenManager.createMenuItem(kitchenManager.findMealsByMealType(MealType.DIET).iterator().next(),Helping.SMALL,Day.FRIDAY));
+			
+		dailyMenus = new ArrayList<DailyMenu>();
+		dailyMenus.add(kitchenManager.createDailyMenu(mondayMeals));
+		dailyMenus.add(kitchenManager.createDailyMenu(tuesdayMeals));
+		dailyMenus.add(kitchenManager.createDailyMenu(wednesdayMeals));
+		dailyMenus.add(kitchenManager.createDailyMenu(thursdayMeals));
+		dailyMenus.add(kitchenManager.createDailyMenu(fridayMeals));
+
+		kitchenManager.saveMenu(kitchenManager.createMenu(5, dailyMenus));
 		
 
 	}

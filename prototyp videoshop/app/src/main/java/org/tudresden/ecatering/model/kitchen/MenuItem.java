@@ -11,6 +11,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
+import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.quantity.Metric;
 
 
@@ -51,23 +52,8 @@ public class MenuItem extends Product {
 		return helping;
 	}
 	
-	@Override
-	public int hashCode() {	
-	     return new HashCodeBuilder(611, 99).
-	       append(super.hashCode()).
-	       append(meal).
-	       toHashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(this, obj);
-	}
-
-	@Override
-	public String toString() {
-		   return ToStringBuilder.reflectionToString(this);
-	}	
+	
+		
 	
 
 }

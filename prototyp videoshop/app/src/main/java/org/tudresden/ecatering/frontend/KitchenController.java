@@ -5,6 +5,7 @@ package org.tudresden.ecatering.frontend;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.tudresden.ecatering.model.kitchen.Ingredient;
 import org.tudresden.ecatering.model.kitchen.KitchenManager;
+import org.tudresden.ecatering.model.stock.Grocery;
 import org.tudresden.ecatering.model.stock.StockManager;
 
 
@@ -132,37 +134,37 @@ class KitchenController {
 	public String createRecipe(ModelMap modelMap){
 		//List all Groceries Available that the cook can use to create a Recipe
 		modelMap.addAttribute("allGroceries", stockManager.findAllGroceries());
-		modelMap.addAttribute("allRecipes", kitchenManager.findAllRecipes());
+		modelMap.addAttribute("allRecipes", kitchenManager.findAllRecipes()); 
 		return "createRecipe";
 	}
 	
 	@RequestMapping(value = "/addRecipe", method = RequestMethod.POST)
-	public String saveRecipe(@RequestParam("name") ArrayList<String> name 
+	public String saveRecipe(@RequestParam("quan") ArrayList<String> quantity,
+								@RequestParam("name") String name,
+							@RequestParam("description") String description
 							 ) 
 	{
-		System.out.println(name);
-
-	/*	if(ing.size()!=quan.size()){
-			System.out.println("Error Size differernt");
-			return "redirect:/createRecipe";
-		}
 		
-		//Create a list of Ingredients
+		System.out.println(quantity);
+
 		List<Ingredient> ingredients = new ArrayList<Ingredient>();
 		
-		System.out.println("Max Ingredients"+ing.size()+"Max Quantity"+quan.size());
-		
-		//Go through the Array from the HTML form
-		for(int i=0; i < ing.size(); i++){
+		Iterable<Grocery> groceries = stockManager.findAllGroceries();
+		int index = 0;
+		for(Grocery grocery : groceries)
+		{
 
-	        System.out.println("Ingredient "+ing.get(i)+" Quantity "+quan.get(i));
-	        //Add the ingredients to the ArrayList
-	        ingredients.add(kitchenManager.createIngredient(stockManager.findGroceryByName(ing.get(i)).get(), quan.get(i)));
-	
+			if(quantity.get(index)!= null &&  !quantity.get(index).trim().isEmpty())
+			{
+				ingredients.add(kitchenManager.createIngredient(grocery, Double.parseDouble(quantity.get(index))));
+				
+			}
+			index++;
 		}
-		//Save the recipe
-		kitchenManager.saveRecipe(kitchenManager.createRecipe(name, desc, ingredients));
-*/
+		
+		kitchenManager.saveRecipe(kitchenManager.createRecipe(name, description, ingredients));
+		System.out.println("done");
+
 		return "redirect:/kitchen";
 	}
 	

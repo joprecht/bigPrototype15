@@ -45,7 +45,6 @@ public class CustomerController {
 	public String menu(ModelMap modelMap, @LoggedIn Optional<UserAccount> userAccount) {
 
 		Helping helping = Helping.REGULAR;
-		
 		Customer customer = customerManager.findCustomerByUserAccount(userAccount.get()).get();
 		
 		if(customer.getBusiness().getBusinessType().equals(BusinessType.CHILDCARE))
